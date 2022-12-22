@@ -1,0 +1,48 @@
+<div class="fix_width">
+    <div class="profile_grid">
+        <div class="profile_navigation_menu">
+            <app-navigations></app-navigations>
+
+        </div>
+        <div class="profile_component">
+            <div class="card_wrapper"  >
+                <div class="card_header">
+                    <h4>My Reviews ({{myReview?.length}})</h4>
+                    
+                </div>
+                <div class="card_detail">
+                    
+                    <div class="review_listings" *ngFor="let item of myReview">
+                        
+                        <div class="review_content">
+                            <h1 routerLink="/product-detail/{{item.product?.productName}}/{{item.product?._id}}">{{item.product?.productName}}</h1>
+                            <!-- <h1>{{item.title}}</h1> -->
+                            <div class="ratings">
+                                <span class="rating"> {{item?.review?.rating}} <i class="feather-star"></i></span>
+                                {{item.review.description}}
+                            </div>
+                            <div class="review_img" *ngIf="item.review.photos[0]">
+                                <img [src]="item.review.photos[0]"  onerror="this.src=`https://saleable-docs.s3.ap-south-1.amazonaws.com/others/img-thumbnail2.gif`;" [alt]="item.review.title" >
+                            </div>
+                            <ul>
+                                <li *ngIf="item.review.customerId">
+                                    {{item.review.customerId.f_name}}  {{item.review.customerId.l_name}}
+                                </li>
+                                <li>{{item.review.date}}</li>
+                            </ul>
+                             <!-- <div class="review_img" *ngIf="item.review.photos[0]">
+                                <img [src]="item.review.photos" alt="">
+                            </div> -->
+                        </div>
+                    </div>
+                    
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+ 

@@ -1,0 +1,403 @@
+<div id="header" >
+    <div class="fix_width">
+        <div class="logo">
+        
+            <a routerLink="home" routerLinkActive="router-link-active" (click)="searchData = null"  >
+                <img src="https://saleable-static.s3.ap-south-1.amazonaws.com/logoWhite.png" alt="">
+            </a>
+        </div>
+        <div class="search">
+            <div class="search_wrapper">
+                <input type="text" [(ngModel)]="searchData" (input)="searchProduct($event)" 
+                placeholder="what are you looking for?" (keyup.enter)="searchByEnter()">
+                <span class="feather-search"></span>
+            </div>
+              <div class="search_result" *ngIf="searchResult?.length >= 1 ">
+                <ul>
+                    <ng-container *ngFor="let item of searchResult">
+                    
+                    <ng-container *ngIf="item.type === 'category'; else showDiffrentType">
+                        <li   (click)="searchResult = [];hiderSearchResult = false; searchData = item.title" routerLink="search-result/{{item.title}}}/{{item.brandId}}/{{item._id}}" >
+                            <div class="search_result_img">
+                               <span class="feather-search"></span>
+                            </div>
+                            <div class="search_result_content" >
+                                {{searchData}} | 
+                                <span>{{item.title}}</span>
+                            </div>
+                          
+                        </li>
+                       
+                       </ng-container>
+                       <ng-template #showDiffrentType>
+                        <li   (click)="searchResult = [];searchData=item.title" routerLink="product-detail/{{item.title}}/{{item._id}}" >
+                            <div class="search_result_img">
+                               <span class="feather-search"></span>
+                            </div>
+                            <div class="search_result_content" >
+                                {{item.title}}
+                           </div>
+                        </li>
+            
+                    </ng-template>
+                    </ng-container>
+                 
+                       
+                </ul>
+            </div>
+        </div>
+        <div class="user_links">
+            <ul>
+                <li (click)="openProfile()"  *ngIf="!isUserLoggedIn">
+                    <span class="feather-user"></span>
+                    Sign In
+                </li>
+    
+                <li *ngIf="isUserLoggedIn">
+                    <div class="user_header_profile">
+                        <img  onerror="this.src=`https://dev-childcare.appqik.us/assets/img/avtar.svg`;" src="" alt="">
+                        <h4>{{loggedInUserData?.f_name}}</h4>
+                    </div>
+                    <div id="user_login_menu">
+                        <ul>
+
+                            <li routerLink="/my/orders"> 
+                                <img src="https://saleable-docs.s3.ap-south-1.amazonaws.com/others/purchase-order.png" >
+                                Orders
+                            </li>
+                            <li routerLink="/my/address">
+                                <img src="https://saleable-docs.s3.ap-south-1.amazonaws.com/others/home-address.png" >
+                                Address
+                            </li>
+                            <li routerLink="/my/recent-reveiws">
+                                <img src="https://saleable-docs.s3.ap-south-1.amazonaws.com/others/product-return+(1).png" >
+                                My Reviews
+                            </li>
+                            <!-- <li>
+                                <img src="https://saleable-docs.s3.ap-south-1.amazonaws.com/others/product-return+(1).png" >
+                                Returns
+                            </li> -->
+                            <li routerLink="/my/profile">
+                                <img src="https://saleable-docs.s3.ap-south-1.amazonaws.com/others/profile.png" >
+                                Profile
+                            </li>
+                            <!-- <li routerLink="wishlist">
+                                <img src="https://saleable-docs.s3.ap-south-1.amazonaws.com/others/wishlist.png">
+                                Wishlist
+                            </li> -->
+                            <li (click)="logOut()">
+                                <img src="https://saleable-docs.s3.ap-south-1.amazonaws.com/others/log-out.png">
+                                Logout
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li routerLink="wishlist">
+                    <span class="feather-heart"></span>
+                    wishlist
+                </li>
+                <li routerLink="cart">
+                    <span class="feather-shopping-bag"></span>
+                    Cart
+                     <div class="cart_count" *ngIf="cartItemsCount >= 1">
+                        {{cartItemsCount}}
+                    </div>
+                </li>
+                <!-- <li class="sell_with_us" (click)="sellWithUs()">
+                    <span class="feather-home"></span>
+                    Sell With Us
+                </li> -->
+            </ul>
+        </div>
+    </div>
+
+</div>
+<div id="secondary_header" [ngClass]="{'openMenu': openMobileMenu}">
+    <div  class="fix_width">
+    <div class="all_categories upperCase">
+        <!-- <span class="feather-grid"></span>  -->
+        All Categories
+        <span></span>
+       <div class="all_cat_menu">
+           <div class="cat_main_listings">
+                    <ul>
+                        <ng-container *ngFor="let category of categoryList ; let i = index">
+                            <li>
+                                <a routerLink="category/{{category.name}}/{{category._id}}" class="upperCase"> {{category.name}}</a>
+                                <div class="all_cat_tree_sec">
+                                    <h1>{{category.name}}</h1>
+
+                                    <ul>
+                                        <li  *ngFor="let subCategoryItem of category.subCategory;let index = index; ">
+                                            <h4   class="category-title" routerLink="product/{{category.name}}/{{category._id}}/{{subCategoryItem.title}}/{{subCategoryItem._id}}" (click)="openMobileMenu = false">{{subCategoryItem.title}}</h4>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                
+                                <!-- <div class="all_cat_tree_sec" >
+                                    <div class="all_cat_inner"  *ngFor="let subCategoryItem of category.subCategory;let index = index; ">
+                                    <ul  >
+                                        <li *ngFor="let productCategory of subCategoryItem.productCategory">
+                                            <a href="javascript:void(0)"  (click)="openMobileMenu = false" routerLink="product/{{category.name}}/{{category._id}}/{{subCategoryItem.title}}/{{subCategoryItem._id}}/productCategory/{{productCategory.title}}/{{productCategory._id}}">{{productCategory.title}}</a>
+                                        </li>
+                                      
+                                    </ul>
+                                </div> -->
+                                <!-- </div> -->
+                            </li>
+                        </ng-container>
+                    </ul>
+           </div>
+       </div>
+    </div>
+    <div class="subcategory">
+        <ul>
+            <ng-container *ngFor="let category of categoryList ; let i = index">
+                <!-- Commented code for get brand detail by category -->
+                <!-- (mouseover)="getAllBrandByCategory(category._id)" -->
+            <li >
+                <a href="javascript:void(0)" *ngIf="disbaleMobileLink"  class="upperCase"   >{{category.name}}</a>
+                <a href="javascript:void(0)" *ngIf="!disbaleMobileLink" routerLink="category/{{category.name}}/{{category._id}}"  class="upperCase"  >{{category.name}}</a>
+
+                <div class="mega_menu">
+                    <div class="mega_inner">
+                        <h4>Categories</h4>
+                        <ul>
+                            <li *ngFor="let subCategoryItem of category.subCategory; ">
+                                <a class="category-title" routerLink="product/{{category.name}}/{{category._id}}/{{subCategoryItem.title}}/{{subCategoryItem._id}}" (click)="openMobileMenu = false">
+                                    {{subCategoryItem.title}}
+                                    <!-- <img src="{{subCategoryItem.image}}" alt=""> -->
+                                </a>
+                                <div class="all_cat_tree_sec">
+                                    <ng-container *ngFor="let productCategory of subCategoryItem.productCategory">
+                                        
+                                        <a href="javascript:void(0)"  (click)="openMobileMenu = false" routerLink="product/{{category.name}}/{{category._id}}/{{subCategoryItem.title}}/{{subCategoryItem._id}}/productCategory/{{productCategory.title}}/{{productCategory._id}}">
+                                            <!-- <img src="{{productCategory.image}}"  onerror="this.src=`https://saleable-docs.s3.ap-south-1.amazonaws.com/others/img-thumbnail2.gif`;"  alt="{{productCategory.title}}"> -->
+                                            {{productCategory.title}}
+                                        </a>
+                                     </ng-container> 
+                                </div>
+                                
+                            </li>
+                        </ul>        
+                    </div>
+                              
+                </div>
+            </li>
+          
+        </ng-container>
+        <li class="sell_with_us" (click)="sellWithUs()">
+           <a href="javascript:void(0)" class="upperCase"> Sell With Us</a>
+        </li> 
+        </ul>
+    </div>
+</div>
+</div>
+<!-- Create an account Modal -->
+<div class="modal_wrapper" *ngIf="isSignUpModal">
+    <div class="modal_container socail_login">
+            <div class="modal_heading">
+                <h4>Create an account</h4>
+                <p>Already have an account?   <button (click)="isSignUpModal = false;isLoginModal = true ">Sign In</button>  </p>
+                <button class="close-modal" (click)="resetModal()"><span class="feather-x"></span></button>
+            </div>
+            <div class="modal_body">
+                <div class="form" [formGroup]="signUpForm" >
+                    <div class="input_wrapper">
+                        <label for="fname" >First Name</label>
+                        <input type="text"  id="fname" formControlName="f_name">
+                    </div>
+                    <div class="input_wrapper">
+                        <label for="lname">Last Name</label>
+                        <input type="text" formControlName="l_name"  id="lname">
+                    </div>
+                    <div class="input_wrapper">
+                        <label for="email">Email</label>
+                        <input type="email"  formControlName="f_email" id="email">
+                    </div>
+                    <div class="input_wrapper">
+                        <label for="password">Password</label>
+                        <input [type]="toggleInput ? 'text': 'password'"  id="password" formControlName="f_password">
+                        <span (click)="toggleInputField()"> <i class="feather-eye" [ngClass]="{'feather-eye': !toggleInput,
+                            'feather-eye-off': toggleInput}"></i>  </span>
+                    </div>
+                    <div class="input_wrapper" *ngIf="showPasswordExamples">
+                        <ul>
+                            <li> <span class="feather-x"></span> A <b>lowercase</b> letter</li>
+                            <li> <span class="feather-x"></span> A <b>capital</b> (uppercase) </li>
+                            <li> <span class="feather-x"></span> A <b>Special</b> character </li>
+                            <li> <span class="feather-x"></span> A <b>number</b> </li>
+                            <li> <span class="feather-x"></span> Minimum <b>6 character</b> </li>
+                        </ul>
+                       
+                    </div>
+                    
+                    <div class="input_wrapper">
+                         <button [disabled]="signUpForm.invalid || isLoading" [ngClass]="{'is_loading': isLoading}"  (click)="createAccount()">
+                            <div class="button_text" *ngIf="!isLoading">login In</div>
+                            <div class="circle"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+<!-- login modal -->
+<div class="modal_wrapper" *ngIf="isLoginModal">
+    <div class="modal_container socail_login" style="padding: 30px 0;">
+            <div class="modal_heading">
+                <button class="go_back" *ngIf="isLoginWithEmail" (click)="isLoginWithEmail = false"><span class="feather-arrow-left"></span></button>
+                <!-- <h1>Welcome back!</h1> -->
+                <h4>Login Or SignUp</h4>
+                <!-- <p>Don't have an account?  <button (click)="isSignUpModal = true;isLoginModal = false ">Sign Up</button>  </p> -->
+                <button class="close-modal" (click)="resetModal()"><span class="feather-x"></span></button>
+            </div>
+            <div class="modal_body">
+                <div class="email_login" (click)="onLoginWithEmail()" *ngIf="!isLoginWithEmail">
+                    Have a Gmail/Email Account?
+                </div>
+                <div class="divider" *ngIf="!isLoginWithEmail">
+                    or
+                </div>
+                <div class="form" [formGroup]="loginForm" *ngIf="!isLoginWithEmail">
+                    <div class="input_wrapper">
+                        <label for="email">Enter Mobile Number</label>
+                        <input type="text"   formControlName="f_email" mask="000-0000-000"   id="email" (input)="onEnterEmail()">
+                    </div>
+                    <div style="width: 100%;">
+                        <div class="input_wrapper" >
+                            <button    (click)="onContinue()">
+                                Continue
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form" [formGroup]="loginForm" *ngIf="isLoginWithEmail">
+                    <div class="input_wrapper">
+                        <label for="email">Enter Email</label>
+                        <input type="text" formControlName="f_email" id="email">
+                    </div>
+                    <div class="input_wrapper">
+                        <label for="password">Password</label>
+                        <input [type]="toggleInput ? 'text': 'password'" formControlName="f_password"  id="password">
+                        <span (click)="toggleInputField()"> <i class="feather-eye" [ngClass]="{'feather-eye': !toggleInput,
+                            'feather-eye-off': toggleInput}"></i>  </span>
+                    </div>
+                    <div class="input_wrapper">
+                        <button [disabled]="loginForm.invalid || isLoading" [ngClass]="{'is_loading': isLoading}"  (click)="login()">
+                            <div class="button_text" *ngIf="!isLoading">login In</div>
+                            <div class="circle"></div>
+                        </button>
+                    </div>
+                    <div class="input_wrapper forget_password">
+                        <a href="javascrit:void(0)" (click)="forgetPassword = true;isLoginModal = false">Forget Password?</a>
+                    </div>
+                    <div class="input_wrapper socail_media">
+                        <button  [ngClass]="{'is_loading': loginType === 'gmail'}"  (click)="loginWithGoogle()" style="width: 100%;">
+                            <div class="button_text" *ngIf="!isLoading">  <img src="https://saleable-docs.s3.ap-south-1.amazonaws.com/icons/2991148-removebg-preview.png" alt="">  Sign up with Google</div>
+                            <div class="circle"></div>
+                        </button>
+                      
+                    </div>
+                  
+                </div>
+               
+            </div>
+    </div>
+</div>
+<!-- Forget Password -->
+
+<div class="modal_wrapper" *ngIf="forgetPassword">
+    <div class="modal_container socail_login">
+            <div class="modal_heading">
+                <h4>Forget Password</h4>
+                 <button class="close-modal"  (click)="isSignUpModal = false; isLoginModal = true; forgetPassword = false "><span class="feather-x"></span></button>
+            </div>
+            <div class="modal_body">
+                <div class="form" [formGroup]="forgetPasswordForm">
+                    <div class="input_wrapper">
+                        <label for="email">Email</label>
+                        <input type="email" formControlName="email" id="email">
+                    </div>
+                  
+                    <div class="input_wrapper">
+                        <button [disabled]="forgetPasswordForm.invalid || isLoading" [ngClass]="{'is_loading': isLoading}"  (click)="onForgetPassword()">
+                            <div class="button_text" *ngIf="!isLoading">Submit</div>
+                            <div class="circle"></div>
+                        </button>
+                    </div>
+                    
+                    <div class="input_wrapper forget_password">
+                        <a href="javascrit:void(0)">Go Back</a>
+                    </div>
+                </div>
+              
+            </div>
+    </div>
+</div>
+<!-- Otp Modal -->
+<div class="modal_wrapper" *ngIf="showOtpModal">
+    <div class="modal_container socail_login">
+            <div class="modal_heading">
+                <h4>Please enter the OTP sent to</h4>
+                <p>{{loginForm.controls.f_email.value}}</p>
+                 <button class="close-modal"  (click)="showOtpModal = false;"><span class="feather-x"></span></button>
+            </div>
+            <div class="modal_body">
+                <div class="form" [formGroup]="otpVerifyForm">
+                    <div class="input_wrapper">
+                        <!-- <label for="email">Email</label> -->
+                        <input type="text" formControlName="otp" id="email" mask="0 0 0 0 0 0"  placeholder="X X X X X X">
+                    </div>
+                    <div class="input_wrapper forget_password" style="align-items: flex-start;font-weight: 700;">
+                        <a href="javascrit:void(0)" (click)="resendOtp()">Resend Code</a>
+                    </div>
+                    <div class="input_wrapper">
+                        <button [disabled]="isOtpVerifying" [ngClass]="{'is_loading': isOtpVerifying}"  (click)="verifyOtp()">
+                            <div class="button_text" *ngIf="!isOtpVerifying">Verify</div>
+                            <div class="circle"></div>
+                        </button>
+                    </div>
+                    <div class="input_wrapper forget_password">
+                        <a href="javascript:void(0)"  (click)="resetOtpModal()" >Go Back</a>
+                    </div>
+                </div>
+              
+            </div>
+    </div>
+</div>
+<!-- Footer Menu -->
+<div id="mobile_menu">
+    <ul>
+        <li routerLink="/home" (click)="openMobileMenu = false">
+            <img src="https://saleable-static.s3.ap-south-1.amazonaws.com/home.png" alt="">
+            <p>Home</p>
+        </li>
+        <li (click)="openMobileMenu = !openMobileMenu" >
+            <img src="https://saleable-static.s3.ap-south-1.amazonaws.com/categories.png" alt="">
+            <p>Category</p>
+        </li>
+        <li  target="_blank" routerLink="https://seller.saleable.in/">
+            <img src="https://saleable-static.s3.ap-south-1.amazonaws.com/money.png" alt="">
+            <p>Sell</p>
+        </li>
+        <li (click)="openProfile(); openMobileMenu = false" *ngIf="!isUserLoggedIn"  >
+            <img src="https://saleable-static.s3.ap-south-1.amazonaws.com/profile.png" alt="">
+            <p>Account</p>
+        </li>
+        <li routerLink="/my/profile" *ngIf="isUserLoggedIn" (click)="openMobileMenu = false">
+            <img src="https://saleable-static.s3.ap-south-1.amazonaws.com/profile.png" alt="">
+            <p>{{loggedInUserData?.f_name | slice:0:5}}..</p>
+        </li>
+        
+        <li routerLink="cart" (click)="openMobileMenu = false">
+            <img src="https://saleable-static.s3.ap-south-1.amazonaws.com/trolley.png" alt="">
+            <p>Cart</p>
+            <div class="cart_count" *ngIf="cartItemsCount >= 1">
+                {{cartItemsCount}}
+            </div>
+        </li>
+      
+    </ul>
+</div>

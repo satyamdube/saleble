@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Online Shopping Site for Mobiles, Electronics, Furniture, Grocery, Lifestyle, Books & More. Best Offers!</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="https://saleable-docs.s3.ap-south-1.amazonaws.com/icons/favicon.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="assets/feather.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+  <app-root></app-root>
+  <div id="snackbar">
+    
+  </div>
+  <script>
+    $(document).ready(function() {
+      // $(".mega_inner").hover(function(){
+      //     alert('hovered')
+      //   }, function(){
+      //     console.log('need to hide');
+      //   $('.mega_menu').css("display", "none !important");
+      // });
+      function explode(){
+         $('.mega_menu').removeAttr('id');
+         $('.all_cat_menu').removeAttr('id');
+        }
+      $(document).on('mouseleave', '.mega_inner', function() { 
+         $('.mega_menu').attr('id', 'onLeave');
+        setTimeout(explode, 300);
+       });
+       $(document).on('mouseleave', '.cat_main_listings', function() { 
+         $('.all_cat_menu').attr('id', 'onLeave');
+        setTimeout(explode, 300);
+       });
+       
+       $(document).on('click', '.footerLinks', function() { 
+        if($(this).hasClass('expand_tab')){
+          $('.footerLinks').removeClass('expand_tab');
+          $(this).removeClass('expand_tab');
+        } else {
+          $(this).addClass('expand_tab')
+        }
+       });
+       
+    });
+    // clearing recient view products on close tab
+    window.onbeforeunload = () => {
+      localStorage.removeItem('receintviews');
+    }
+  </script>
+
+  <div id="loader">
+      <img src="https://saleable-docs.s3.ap-south-1.amazonaws.com/others/3d-logo2+(1).gif" alt="loading" style="opacity: 0">
+  </div>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+</body>
+</html>

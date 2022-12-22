@@ -1,0 +1,450 @@
+<!-- Hero section  -->
+<div id="hero_slider">
+  <owl-carousel-o [options]="customOptions">
+    <ng-template carouselSlide *ngFor="let item of allOffers">
+      <img src="{{item.img}}" alt="{{item.title}}"   (click)="reditectToOffer(item)">
+    </ng-template>
+  </owl-carousel-o>
+</div>
+
+<!-- Hero section end -->
+<!-- Shop By Category -->
+<app-shop-by-category></app-shop-by-category>
+<!-- Shop By Category End-->
+<!-- carousel 1 -->
+<div class="home_wrapper" *ngIf="dealOfTheDay?.length >= 6">
+  <div class="container-fluid">
+    <div class="common_heading">
+      <h2>Deals of the day</h2>
+    </div>
+    <div class="home_carousel">
+      <owl-carousel-o [options]="product_carousel">
+        <ng-container  *ngFor="let product  of dealOfTheDay">
+        <ng-template carouselSlide>
+          <div class="p_wrapper" routerLink="/product-detail/{{product.productName}}/{{product._id}}">
+            <div class="p_img">
+              <img [src]="product.productImages[0]" [alt]="product.productName" onerror="this.src=`https://saleable-docs.s3.ap-south-1.amazonaws.com/others/img-thumbnail2.gif`;">
+            </div>
+            
+            <div class="p_dec">
+              <p>
+                {{product.productName}}
+              </p>
+              <div class="price_listing">
+                <ul>
+                  <ng-container  *ngIf="product.productSalePrice; else showNormalPrice">
+                  
+                      <li>
+                          {{ product.productSalePrice  | currency:'INR' :'symbol':'1.0'}}
+                      </li>
+                      <li>
+                          <span> {{ product.productRegPrice| currency:'INR' :'symbol':'1.0'}}</span>
+                          <span>{{product.productDiscount}}% Off</span>
+                      </li>       
+                  </ng-container>
+                  <ng-template #showNormalPrice>
+                      <li>
+                          {{ product.productRegPrice| currency:'INR' :'symbol':'1.0'}}
+                      </li>
+                  </ng-template>
+                  
+              </ul>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        </ng-container>
+      </owl-carousel-o>
+    </div>
+  </div>
+</div>
+ 
+
+<!-- Deal of the day -->
+
+<div class="offers" *ngIf="menProducts?.offers"   >
+  <img src="{{menProducts?.offers.img}}" alt="offer"  (click)="reditectToOffer(menProducts?.offers)">
+</div>
+<!-- Men Products Lisitings -->
+<div class="home_wrapper" >
+  <div class="container-fluid">
+    <div class="common_heading">
+      <h2>New Outcomes</h2>
+      <button class="button_has_hover" routerLink="/category/Fashion/{{menProducts?.Fashion[0].parentCategory}}/">View All</button>
+    </div>
+     <div class="home_carousel">
+      <owl-carousel-o [options]="product_carousel">
+        <ng-container  *ngFor="let product  of menProducts?.Fashion">
+        <ng-template carouselSlide>
+          <div class="p_wrapper" routerLink="/product-detail/{{product.productName}}/{{product._id}}">
+            <div class="p_img">
+              <img [src]="product.productImages[0]" [alt]="product.productName" onerror="this.src=`https://saleable-docs.s3.ap-south-1.amazonaws.com/others/img-thumbnail2.gif`;">
+            </div>
+           
+            <div class="p_dec">
+              <p>
+                {{product.productName}}
+              </p>
+              <div class="price_listing">
+                <ul>
+                  <ng-container  *ngIf="product.productSalePrice; else showNormalPrice">
+                  
+                      <li>
+                          {{ product.productSalePrice  | currency:'INR' :'symbol':'1.0'}}
+                      </li>
+                      <li>
+                          <span> {{ product.productRegPrice| currency:'INR' :'symbol':'1.0'}}</span>
+                          <span>{{product.productDiscount}}% Off</span>
+                      </li>       
+                  </ng-container>
+                  <ng-template #showNormalPrice>
+                      <li>
+                          {{ product.productRegPrice| currency:'INR' :'symbol':'1.0'}}
+                      </li>
+                  </ng-template>
+                  
+              </ul>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        </ng-container>
+      </owl-carousel-o>
+    </div>
+  </div>
+ 
+</div>
+<!-- <div class="offers" *ngIf="womenProducts?.offers">
+  <img src="{{womenProducts?.offers.img}}" alt="offer" (click)="reditectToOffer(womenProducts?.offers)">
+</div> -->
+<div class="home_wrapper bg_gradient" >
+  <div class="container-fluid">
+  
+    <div class="category_by_grid">
+      <div class="left_sec">
+        <h3> Trending Fashion</h3>
+      </div>
+      <div class="right_sec">
+        <owl-carousel-o [options]="product_carousel">
+          <ng-container  *ngFor="let item  of fashionSubcategory?.subCategory">
+          <ng-template carouselSlide>
+            <div class="main_wrapper"  routerLink="../product/{{'Fashion'}}/{{fashionSubcategory?._id}}/{{item.title}}/{{item._id}}">
+
+                <img [src]="item.image " alt="">
+            
+            </div>
+          </ng-template>
+          </ng-container>
+        </owl-carousel-o>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="home_wrapper" >
+  <div class="container-fluid">
+    <div class="common_heading">
+      <h2>Trending For Women</h2>
+     </div>
+     <div class="home_carousel">
+      <owl-carousel-o [options]="product_carousel">
+        <ng-container  *ngFor="let product  of womenProducts?.Women">
+        <ng-template carouselSlide>
+          <div class="p_wrapper" routerLink="/product-detail/{{product.productName}}/{{product._id}}">
+            <div class="p_img">
+              <img [src]="product.productImages[0]" [alt]="product.productName" onerror="this.src=`https://saleable-docs.s3.ap-south-1.amazonaws.com/others/img-thumbnail2.gif`;">
+            </div>
+             
+            <div class="p_dec">
+              <p>
+                {{product.productName}}
+              </p>
+              <div class="price_listing">
+                <ul>
+                  <ng-container  *ngIf="product.productSalePrice; else showNormalPrice">
+                  
+                      <li>
+                          {{ product.productSalePrice  | currency:'INR' :'symbol':'1.0'}}
+                      </li>
+                      <li>
+                          <span> {{ product.productRegPrice| currency:'INR' :'symbol':'1.0'}}</span>
+                          <span>{{product.productDiscount}}% Off</span>
+                      </li>       
+                  </ng-container>
+                  <ng-template #showNormalPrice>
+                      <li>
+                          {{ product.productRegPrice| currency:'INR' :'symbol':'1.0'}}
+                      </li>
+                  </ng-template>
+                  
+              </ul>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        </ng-container>
+      </owl-carousel-o>
+    </div>
+  </div>
+ 
+</div> -->
+
+<div class="offers" *ngIf="babyProducts?.offers">
+  <img src="{{babyProducts?.offers.img}}" alt="offers" (click)="reditectToOffer(babyProducts?.offers)">
+</div>
+<!-- speical for babys Products -->
+<div class="home_wrapper" >
+  <div class="container-fluid">
+    <div class="common_heading">
+      <h2>Special For Babies</h2>
+      <button class="button_has_hover" routerLink="/category/Fashion/{{babyProducts?.BabyToys[0].parentCategory}}/">View All</button>
+    </div>
+     <div class="home_carousel">
+      <owl-carousel-o [options]="product_carousel">
+        <ng-container  *ngFor="let product  of babyProducts?.BabyToys">
+        <ng-template carouselSlide>
+          <div class="p_wrapper" routerLink="/product-detail/{{product.productName}}/{{product._id}}">
+            <div class="p_img">
+              <img [src]="product.productImages[0]" [alt]="product.productName" onerror="this.src=`https://saleable-docs.s3.ap-south-1.amazonaws.com/others/img-thumbnail2.gif`;">
+            </div>
+            
+            <div class="p_dec">
+              <p>
+                {{product.productName}}
+              </p>
+              <div class="price_listing">
+                <ul>
+                  <ng-container  *ngIf="product.productSalePrice; else showNormalPrice">
+                  
+                      <li>
+                          {{ product.productSalePrice  | currency:'INR' :'symbol':'1.0'}}
+                      </li>
+                      <li>
+                          <span> {{ product.productRegPrice| currency:'INR' :'symbol':'1.0'}}</span>
+                          <span>{{product.productDiscount}}% Off</span>
+                      </li>       
+                  </ng-container>
+                  <ng-template #showNormalPrice>
+                      <li>
+                          {{ product.productRegPrice| currency:'INR' :'symbol':'1.0'}}
+                      </li>
+                  </ng-template>
+                  
+              </ul>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        </ng-container>
+      </owl-carousel-o>
+    </div>
+  </div>
+ 
+</div>
+<div class="home_wrapper bg_gradient bg_light_blue" >
+  <div class="container-fluid">
+  
+    <div class="category_by_grid">
+      <div class="left_sec">
+        <h3>Categories By Baby's Toys</h3>
+      </div>
+      <div class="right_sec">
+        <owl-carousel-o [options]="product_carousel">
+          <ng-container  *ngFor="let item  of babyToysSubcategory?.subCategory">
+          <ng-template carouselSlide>
+            <div class="main_wrapper box-shadow-none"  routerLink="../product/{{'Baby & Toys'}}/{{babyToysSubcategory?._id}}/{{item.title}}/{{item._id}}">
+
+                <img [src]="item.image " alt="">
+            
+            </div>
+          </ng-template>
+          </ng-container>
+        </owl-carousel-o>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Special for babys end -->
+<div class="offers" *ngIf="electronicsProducts?.offers"   >
+  <img src="{{electronicsProducts?.offers.img}}" alt="offer"  (click)="reditectToOffer(electronicsProducts?.offers)">
+</div>
+<!-- Shop By Category End-->
+<div class="home_wrapper" >
+  <div class="container-fluid">
+    <div class="common_heading">
+      <h2>Mobiles & Electronics</h2>
+    </div>
+    <div class="category_by_grid">
+      <ng-container *ngFor="let item of electronicsSubCategory?.subCategory">
+
+        <div class="cat_wrapper" routerLink="../product/{{'Electronics'}}/{{electronicsSubCategory?._id}}/{{item.title}}/{{item._id}}" >
+          <div class="categoryImg" [ngStyle]="{'background-image': 'url('+ item.image +')'}"></div>
+          <!-- <img [src]="item.image" alt=""> -->
+          <!-- <h4>{{item.title}}</h4> -->
+        </div>
+      </ng-container>    
+    </div>
+  </div>
+</div>
+<!-- Shop By Category -->
+  <app-shop-by-category></app-shop-by-category>
+<!-- Shop by category end -->
+<div class="offers" *ngIf="sportProducts?.offers">
+  <img src="{{sportProducts?.offers.img}}" alt="offers" (click)="reditectToOffer(sportProducts?.offers)">
+</div>
+<!-- speical for babys Products -->
+<div class="home_wrapper" >
+  <div class="container-fluid">
+    <div class="common_heading">
+      <h2>Speical In Sports</h2>
+      <button class="button_has_hover" routerLink="/category/Fashion/{{sportProducts?.Sports[0].parentCategory}}/">View All</button>
+    </div>
+     <div class="home_carousel">
+      <owl-carousel-o [options]="product_carousel">
+        <ng-container  *ngFor="let product  of sportProducts?.Sports">
+        <ng-template carouselSlide>
+          <div class="p_wrapper" routerLink="/product-detail/{{product.productName}}/{{product._id}}">
+            <div class="p_img">
+              <img [src]="product.productImages[0]" [alt]="product.productName" onerror="this.src=`https://saleable-docs.s3.ap-south-1.amazonaws.com/others/img-thumbnail2.gif`;">
+            </div>
+            
+            <div class="p_dec">
+              <p>
+                {{product.productName}}
+              </p>
+              <div class="price_listing">
+                <ul>
+                  <ng-container  *ngIf="product.productSalePrice; else showNormalPrice">
+                  
+                      <li>
+                          {{ product.productSalePrice  | currency:'INR' :'symbol':'1.0'}}
+                      </li>
+                      <li>
+                          <span> {{ product.productRegPrice| currency:'INR' :'symbol':'1.0'}}</span>
+                          <span>{{product.productDiscount}}% Off</span>
+                      </li>       
+                  </ng-container>
+                  <ng-template #showNormalPrice>
+                      <li>
+                          {{ product.productRegPrice| currency:'INR' :'symbol':'1.0'}}
+                      </li>
+                  </ng-template>
+                  
+              </ul>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        </ng-container>
+      </owl-carousel-o>
+    </div>
+  </div>
+ 
+</div>
+
+<div class="home_wrapper bg_gradient bg_light_blue" >
+  <div class="container-fluid">
+  
+    <div class="category_by_grid">
+      <div class="left_sec">
+        <h3>Categories By Sports</h3>
+      </div>
+      <div class="right_sec">
+        <owl-carousel-o [options]="product_carousel">
+          <ng-container  *ngFor="let item  of sportSubcategory?.subCategory">
+          <ng-template carouselSlide>
+            <div class="main_wrapper box-shadow-none"  routerLink="../product/{{'Sports'}}/{{sportSubcategory?._id}}/{{item.title}}/{{item._id}}">
+
+                <img [src]="item.image " alt="">
+            
+            </div>
+          </ng-template>
+          </ng-container>
+        </owl-carousel-o>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="offers" *ngIf="beautyCare?.offers"   >
+  <img src="{{beautyCare?.offers.img}}" alt="offer"  (click)="reditectToOffer(beautyCare?.offers)">
+</div>
+<div class="home_wrapper bg_gradient bg_light_blue" >
+  <div class="container-fluid">
+  
+    <div class="category_by_grid">
+      <div class="left_sec">
+        <h3>Expolre  Beauty & Care</h3>
+      </div>
+      <div class="right_sec">
+        <owl-carousel-o [options]="threeCardCarousel">
+          <ng-container  *ngFor="let item  of beautyAndCare?.subCategory">
+          <ng-template carouselSlide>
+            <div class="main_wrapper box-shadow-none"  routerLink="../product/{{'Beauty & Care'}}/{{beautyAndCare?._id}}/{{item.title}}/{{item._id}}">
+
+                <img [src]="item.image " alt="">
+            
+            </div>
+          </ng-template>
+          </ng-container>
+        </owl-carousel-o>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="offers" *ngIf="homeAndKitchensProducts?.offers"   >
+  <img src="{{homeAndKitchensProducts?.offers.img}}" alt="offer"  (click)="reditectToOffer(homeAndKitchensProducts?.offers)">
+</div>
+<div class="home_wrapper bg_gradient bg_light_blue" >
+  <div class="container-fluid">
+  
+    <div class="category_by_grid">
+      <div class="left_sec">
+        <h3>Categories By Home & Kitchen</h3>
+      </div>
+      <div class="right_sec">
+        <owl-carousel-o [options]="product_carousel">
+          <ng-container  *ngFor="let item  of homeAndKitchenSubcategory?.subCategory">
+          <ng-template carouselSlide>
+            <div class="main_wrapper box-shadow-none"  routerLink="../product/{{'Home & Kitchen'}}/{{homeAndKitchenSubcategory?._id}}/{{item.title}}/{{item._id}}">
+
+                <img [src]="item.image " alt="">
+            
+            </div>
+          </ng-template>
+          </ng-container>
+        </owl-carousel-o>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Shop By Category -->
+<app-shop-by-category></app-shop-by-category>
+<!-- Shop by category end -->
+<div class="offers" *ngIf="automotive?.offers"   >
+  <img src="{{automotive?.offers.img}}" alt="offer"  (click)="reditectToOffer(automotive?.offers)">
+</div>
+<!-- Shop By Category End-->
+<div class="home_wrapper" >
+  <div class="container-fluid">
+    <div class="common_heading">
+      <h2>Automotive</h2>
+    </div>
+    <div class="category_by_grid">
+      <ng-container *ngFor="let item of automotiveSubCategory?.subCategory">
+
+        <div class="cat_wrapper" routerLink="../product/{{'Automotive'}}/{{automotiveSubCategory?._id}}/{{item.title}}/{{item._id}}" >
+          <div class="categoryImg" [ngStyle]="{'background-image': 'url('+ item.image +')'}" style="height: 170px"></div>
+          <!-- <img [src]="item.image" alt=""> -->
+          <!-- <h4>{{item.title}}</h4> -->
+        </div>
+      </ng-container>    
+    </div>
+  </div>
+</div>
+<app-receint-view-products></app-receint-view-products>
+
+<!-- Special Products end-->

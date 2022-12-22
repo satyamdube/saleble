@@ -1,0 +1,462 @@
+<div class="product_detail" [ngStyle]="{'background': '#f8f8f8'}">
+    <div class="container-fluid">
+        <div class="breadCrumb">
+           <ul>
+            <li routerLink="/category/{{prodouctBreadCrumb?.parentCategory.name}}/{{prodouctBreadCrumb?.parentCategory._id}}">
+                {{prodouctBreadCrumb?.parentCategory.name}} <span class="feather-chevron-right"></span>
+            </li>
+            <li routerLink="/product/{{prodouctBreadCrumb?.parentCategory.name}}/{{prodouctBreadCrumb?.parentCategory._id}}/{{prodouctBreadCrumb?.subCategoryName}}/{{prodouctBreadCrumb?.subCategory}}">
+                {{prodouctBreadCrumb?.subCategoryName}}  <span class="feather-chevron-right"></span>
+            </li>
+            <li routerLink="/product/{{prodouctBreadCrumb?.parentCategory.name}}/{{prodouctBreadCrumb?.parentCategory._id}}/{{prodouctBreadCrumb?.subCategoryName}}/{{prodouctBreadCrumb?.subCategory}}/productCategory/{{prodouctBreadCrumb?.productCategoryName}}/{{prodouctBreadCrumb?.productCategory}}">
+                {{prodouctBreadCrumb?.productCategoryName}}
+            </li>
+          
+           </ul>
+        </div>
+        <div class="product_wrapper">
+          
+             <div class="prodcut_img " id="show_desktop" [ngClass]="{'openMobileModal': showBigModel}" >
+                <ng-container *ngIf="showBigModel">
+                    <button (click)="showBigModel = false" ><span class="feather-x"></span></button>
+                </ng-container>
+                
+                <ng-container *ngIf="selectedImg; else showThumbnail">
+                <div class="thumbnail" >
+                    <ul>
+                        <li [ngClass]="{'active_thumbnail': (selectedImgIndex + 1) === img.id}"
+                            (mouseenter)="viewHoverImg(img, i)"
+                            *ngFor="let img of productThumbnailArray; let i = index">
+                            <img [src]="img" alt="">
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="full_img">
+                    <div class="img_main">
+                        <ng-img-magnifier [thumbImage]=selectedImg [fullImage]=selectedImg [top]="10"
+                            [right]="-100" [lensWidth]="200" [lensHeight]="200" [resultWidth]="100" [resultHeight]="75"
+                            [imgWidth]="500" [imgHeight]="450">
+                        </ng-img-magnifier>
+                    </div>
+                   
+                </div>
+                 </ng-container>
+                <ng-template #showThumbnail>
+                    <div class="no_img_found">
+                        <img src="https://saleable-docs.s3.ap-south-1.amazonaws.com/others/img-thumbnail.png" alt="No Image Found">
+                    </div>
+                </ng-template>
+            </div>
+            
+            <div class="prodcut_img " id="hide_desktop" >
+                <owl-carousel-o [options]="product_carousel">
+                    <ng-container  *ngFor="let item  of productThumbnailArray">
+                    <ng-template carouselSlide>
+                        <img [src]="item" alt="" (click)="showBigModel = !showBigModel">
+                    </ng-template>
+                    </ng-container>
+                  </owl-carousel-o>
+            </div>
+
+
+            <div class="product_detail">
+                <div class="p_left">
+                    <h4>
+                        {{productDetail?.productName}}
+    
+                    </h4>
+                    <div class="modal_number">
+                        <ul>
+                            <li> SKU Number: <span>{{productDetail?.productSku}}</span></li>
+                            <li>
+                                <span class="rating"> {{productDetail?.productRating}} <i class="feather-star"></i></span>
+                                <span (click)="scroll(target)">{{productRating?.totalRating}} Ratings</span>
+                            </li>
+                            <li>
+                                <span class="feather-share-2" style="cursor: pointer;" (click)="shareMyProducts()" ></span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="price_detail">
+                        <ul>
+                            <li>
+                                {{productPrice?.productSalePrice ? 'Was' :'Now'}}: <span [ngClass]="{'strike': productPrice?.productSalePrice}">{{productPrice?.productRegPrice | currency:'INR' :'symbol':'1.0'}}</span>
+                            </li>
+                            <ng-container *ngIf="productPrice?.productSalePrice">
+                                <li style="font-size: 13px;font-weight: 800;" >
+                                    Now: <span>{{productPrice?.productSalePrice | currency:'INR' :'symbol':'1.0'}}</span>
+                                </li>
+                                <li>
+                                    Saving: <span>{{productPrice?.productDiscount}}% Off</span>
+                                </li>
+                         </ng-container>
+                        </ul>
+                    </div>
+                    <div class="out_of_stock" *ngIf="productDetail?.productStockQuantity === 0; else showDeliveryOptins">
+                        <p>{{outOfStock.title}}</p>
+                    </div>
+                    <ng-template #showDeliveryOptins>
+                    
+                    <div class="delivery_time">
+                        <h4>Usually delivered  <span>5 to 7  days</span></h4>
+                        <h5>inclusive of all taxes</h5>
+                    </div>
+                    <div class="prodct_action" id="main-radio">
+                        <ul>
+                            <li *ngFor="let ele of productDetail?.productAttributes;let i = index">
+                                <h4>{{ele.title}}</h4>
+                                <div class="input_field">
+                                    <label *ngFor="let item of ele.attribute">
+                                        <input type="radio" (change)="onSelectAttribute($event.target.value, ele.title)"  name="attribute{{i}}" value="{{item}}">
+                                        <div class="psudo_button">
+                                             {{item}}
+                                        </div>
+                                    </label>
+                                     
+                                    <!-- <select id="attribute" (change)="onSelectAttribute($event.target.value, item.title)" style="text-transform:capitalize;">
+                                        <option value="null" disabled="disabled" selected>Select {{item.title}}</option>
+                                        <ng-container *ngFor="let item of item.attribute">
+                                            <option value="{{item}}"  >{{item}}</option>
+                                        </ng-container>
+                                    </select> -->
+                                 </div>
+                            </li>
+                           
+                        </ul>
+                    </div>
+                </ng-template>
+                <div id="buy_actions">
+                    <ul>
+                        <li>
+                            <div class="input_field">
+                                <label for="quantity"> Quantity</label>
+                                <select id="quantity"  [(ngModel)]="productQuantity" >
+                                    <option [value]="1"  selected>1</option>
+                                    <ng-container *ngFor="let item of [].constructor(productStockQuantityFromServer); let i  = index">
+                                         <option [value]="i + 2" *ngIf=" (i + 2) <= productStockQuantityFromServer " >{{i + 2}}</option>
+                                    </ng-container>
+                                </select>
+                             </div>
+                        </li>
+                        <li>
+                            <button (click)="addToCart(productDetail, productDetail?.productStockQuantity)"   [ngClass]="{'outOfStock-button': productDetail?.productStockQuantity === 0}" >
+                                <span class="feather-shopping-bag" *ngIf="productDetail?.productStockQuantity !== 0" ></span>  {{productDetail?.productStockQuantity === 0 ? 'Out Of Stock': ' Add To Cart'}}
+                            </button>
+                        </li>
+                        <li >
+                            <button [attr.disbaled]="isAddedOnWishlist" (click)="wishListItem(productDetail)" [ngClass]="{'Wishlisted': isAddedOnWishlist}"><span class="feather-heart"></span> {{isAddedOnWishlist ? 'Wishlisted' : 'Add To Wishlist'}} </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="product_banner">
+                    <img src="https://k.nooncdn.com/cms/pages/20220216/6aa7f5cb320ce3264810573a815efc03/en_mb_uae-PDP.png" alt="">
+                </div>
+             
+                </div>
+                <div class="p_right">
+                    <div class="vendor_detail">
+                        <div class="vendor_top">
+                            <ul>
+                                <li>
+                                    <img src="https://saleable-docs.s3.ap-south-1.amazonaws.com/icons/return-box.png" alt="">
+                                    <p>Enjoy hassle free returns. <a href="returnpolicy" target="_blank">Warranty policy</a> </p>
+                                </li>
+                                <li>
+                                    <img src="https://saleable-docs.s3.ap-south-1.amazonaws.com/icons/shop.png" alt="">
+                                    <p>Sold by: <a href="javascript:void(0)"  href="seller/{{productDetail?.sellerId.f_brandname}}/{{productDetail?.sellerId._id}}" target="_blank">
+                                        {{productDetail?.sellerId.f_brandname}}
+                                    </a></p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="seller_review">
+                        <h6>Seller Reviews</h6>
+                        <ul>
+                            <ng-container *ngFor="let item of [].constructor(5);let i = index">
+                                <li><span class="fa fa-star" [ngClass]="{'checked': isRated(i)}"></span></li> 
+                            </ng-container>
+                          
+                        </ul>
+                        <p *ngIf="productRating?.totalRating >= 1; else noRatingFound">
+                            {{productDetail?.productRating}} Based on {{productRating?.totalRating}} ratings
+                        </p>
+                        <ng-template #noRatingFound>
+                           <p> No Rating Found</p>
+                        </ng-template>
+                    </div>
+                    <div class="feature_sec">
+                        <ul>
+                            <li>
+                                <span>
+                                    <img src="https://saleable-docs.s3.ap-south-1.amazonaws.com/icons/return.png" alt="">
+                                </span>
+                                7 DAYS RETURNS POLICY
+                            </li>
+                            <li>
+                                <span>
+                                    <img src="https://saleable-docs.s3.ap-south-1.amazonaws.com/icons/return-box.png" alt="">
+                                </span>
+                                CONTACTLESS DELIVERY
+                            </li>
+                            <li>
+                                <span>
+                                    <img src="https://saleable-docs.s3.ap-south-1.amazonaws.com/icons/delivery-truck.png" alt="">
+                                </span>
+                                TRUSTED SHIPPING
+                            </li>
+    
+    
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="product_desc" >
+            <div  #target></div>
+
+            <div class="container-fluid">
+                <div class="p_desc_heading">
+                    <ul>
+                        <li (click)="openDescTab(1)" [ngClass]="{'active_desc_tab': tabindex === 1}">
+                            Overview
+                        </li>
+                        <li (click)="openDescTab(2)" [ngClass]="{'active_desc_tab': tabindex === 2}">
+                            Specifications
+                        </li>
+                        <li (click)="openDescTab(3)" [ngClass]="{'active_desc_tab': tabindex === 3}">
+                            Reviews
+                        </li>
+                    </ul>
+                </div>
+                <div class="p_detail" *ngIf="tabindex === 1">
+                    <p><span style="font-weight: bold;">Product information:</span><br></p>
+                    <div [innerHtml]="productDetail?.productDescription"></div>
+                </div>
+                <div class="p_detail" *ngIf="tabindex === 2">
+                    <p><span style="font-weight: bold;">Specifications:</span><br></p>
+                    <div [innerHtml]="productDetail?.productSpecification"></div>
+                    <div class="product_specification">
+                        <ng-container *ngFor="let item of productDetail?.productsSpecificationsimages">
+                             <img [src]="item" alt="Specifications img"  *ngIf="item" >
+                        </ng-container>
+                        
+                    </div>
+                    <!-- <table>
+                        <tbody>
+                            <tr>
+                                <td>Ultra-High Speed SSD</td>
+                                <td>Maximize your play sessions with near instant load times for installed PS5 games.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Ray Tracing</td>
+                                <td>Immerse yourself in worlds with a new level of realism as rays of light are
+                                    individually simulated, creating true-to-life shadows and reflections in supported
+                                    PS5 games.</td>
+                            </tr>
+                            <tr>
+                                <td>Tempest 3D AudioTech</td>
+                                <td>Immerse yourself in soundscapes where it feels as if the sound comes from every
+                                    direction. Through your compatible headphones your surroundings truly come alive
+                                    with Tempest 3D AudioTech in supported games.</td>
+                            </tr>
+                            <tr>
+                                <td>Colour Name</td>
+                                <td>Disc- White</td>
+                            </tr>
+                            <tr>
+                                <td>Connection Type</td>
+                                <td>Wireless</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>Adaptive Sync Technology</td>
+                                <td>AMD FreeSync</td>
+                            </tr>
+                            <tr>
+                                <td>Colour Name</td>
+                                <td>Black</td>
+                            </tr>
+                            <tr>
+                                <td>Connection Type</td>
+                                <td>Wired</td>
+                            </tr>
+                            <tr>
+                                <td>Display Resolution</td>
+                                <td>1920x1080</td>
+                            </tr>
+                        </tbody>
+                    </table> -->
+                </div>
+                <div class="p_detail" *ngIf="tabindex === 3" >
+                    <div class="review_heading">
+                        <div class="review_graph">
+                            <div class="left">
+                                <h3>Overall Rating</h3>
+                                <h6>{{productDetail?.productRating}}</h6>
+                                <ul>
+                                    <ng-container *ngFor="let item of [].constructor(5);let i = index">
+                                        <li><span class="fa fa-star" [ngClass]="{'checked': isRated(i)}"></span></li> 
+                                    </ng-container>
+                                </ul>
+                                <p *ngIf="productRating?.totalRating >= 1; else noRatingFound">
+                                    Based on {{productRating?.totalRating}} ratings
+                                </p>
+                               
+                                <ng-template #noRatingFound>
+                                   <p> No Rating Found</p>
+                                </ng-template>
+                                
+                            </div>
+                            <!-- <div class="right">
+                                <ul>
+                                    <li>
+                                        <div class="right_rating_content">
+                                            5 <span class="fa fa-star checked"></span>
+                                        </div>
+                                        <div class="right_rating_progress_bar">
+                                             <div class="rating_bar" [ngStyle]="{'width': tempFlag ? productRating?.fiveRating: '0'}"></div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="right_rating_content">
+                                            4 <span class="fa fa-star checked"></span>
+                                        </div>
+                                        <div class="right_rating_progress_bar">
+                                            <div class="rating_bar" [ngStyle]="{'width': tempFlag ? '30%': '0'}"></div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="right_rating_content">
+                                            3 <span class="fa fa-star checked"></span>
+                                        </div>
+                                        <div class="right_rating_progress_bar">
+                                            <div class="rating_bar" [ngStyle]="{'width': tempFlag ? '10%': '0'}"></div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="right_rating_content">
+                                            2 <span class="fa fa-star checked"></span>
+                                        </div>
+                                        <div class="right_rating_progress_bar">
+                                            <div class="rating_bar" [ngStyle]="{'width': tempFlag ? '1%': '0'}"></div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="right_rating_content">
+                                            1 <span class="fa fa-star checked"></span>
+                                        </div>
+                                        <div class="right_rating_progress_bar">
+                                            <div class="rating_bar" [ngStyle]="{'width': tempFlag ? '1%': '0'}"></div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div> -->
+                        </div>
+                        <div class="review_instructions">
+                            <ul>
+                                <li>
+                                    <div class="instructions_heading">
+                                        <span>
+                                            <img src="https://saleable-docs.s3.ap-south-1.amazonaws.com/icons/star.png" alt="">
+                                        </span> How do I review this product?
+                                    </div>
+                                    <div class="instructions_desc">
+                                        If you recently purchased this product from seleable, you can go to your Orders page and click on the Submit Review button
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="instructions_heading">
+                                        <span>
+                                            <img src="https://saleable-docs.s3.ap-south-1.amazonaws.com/icons/happy-face.png" alt="" style="width:21px; height: 21px;">
+                                        </span> Where do the reviews come from?
+                                    </div>
+                                    <div class="instructions_desc">
+                                        Our reviews are from seleable customers who purchased the product and submitted a review
+
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="review_body">
+                        <ng-container *ngFor="let item of reviewList; let i = index;">
+
+                            <div class="review_wrapper">
+                                <div class="review-top">
+                                    <div class="user-img">
+                                        <span *ngIf="item.customerId?.f_name">{{item.customerId?.f_name | slice:0:1}}</span>
+                                        <span *ngIf="!item.customerId?.f_name">{{item.customerName | slice:0:1}}</span>
+                                    </div>
+                                    <div class="user-detail">
+                                        <h6 *ngIf="item.customerId?.f_name"> <span>{{item.customerId?.f_name}}&nbsp;{{item.customerId?.l_name}}</span></h6>
+                                        <h6 *ngIf="!item.customerId?.f_name"> <span>{{item.customerName}} </span></h6>
+                                        <h4><span  >{{item.rating}}★</span></h4>
+                                        
+                                    </div>
+                                   
+                                </div>
+                                <div class="review-body">
+                                    <p>{{item.description}}</p>
+                                </div>
+                                <div class="review_img_preview" (click)="openReviewModal(item, i)">
+                                    <img [src]="item.photos[0]" alt="">
+                                </div>
+                            </div>
+                        </ng-container>
+                        
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<div class="modal_wrapper" *ngIf="showReviewModal">
+    <div class="modal_container">
+             <div class="heading">
+                 <h4>{{productDetail?.productName}}</h4>
+                 <button (click)="showReviewModal = false" ><i class="feather-x" ></i></button>
+             </div>
+             <div class="modal_body">
+                 <div class="img_sec">
+                     <img [src]="selectedReview?.photos[0]" alt="{{productDetail?.productName}}">
+                 </div>
+                 <div class="user_review">
+                    <div class="review_wrapper">
+                        <div class="review-top">
+                            <div class="user-img">
+                                  <span>{{selectedReview?.customerName | slice:0:1}}</span>
+                            </div>
+                            <div class="user-detail">
+                                <h6> <span>{{selectedReview?.customerName}}</span></h6>
+                                 <h4><span  >{{selectedReview.rating}}★</span></h4>                           
+                            </div>
+                           
+                        </div>
+                        <div class="review-body">
+                            <p>{{selectedReview?.description}}</p>
+                        </div>
+                       
+                    </div>
+                 </div>
+                 <div id="navigationsButton">
+                     <button class="feather-chevron-left" (click)="scrollReview(selectedReview?.index, 'prev')" ></button>
+                     <button class="feather-chevron-right" (click)="scrollReview(selectedReview?.index, 'next')" ></button>
+                 </div>
+             </div>
+    </div>
+</div>
+<app-similar-products></app-similar-products>
+<app-receint-view-products></app-receint-view-products>
+

@@ -1,0 +1,152 @@
+<div class="fix_width">
+    <div class="profile_grid">
+        <div class="profile_navigation_menu">
+            <app-navigations></app-navigations>
+        </div>
+        <div class="profile_component">
+            <div class="card_wrapper">
+                <div class="card_header">
+                   <h4>All Orders</h4>
+
+                   <select [(ngModel)]="orderFilter" (change)="filterOrder()">
+                       <option value="delivered">Delivered</option>
+                       <option value="cancelled">Cancelled</option>
+                       <option value="onway">On The Way</option>
+                       <option value="all">View All</option>
+                   </select>
+                </div>               
+                 <ng-container *ngIf="orderListings?.length === 0; else showOrder">
+                    <div class="no_order_found">
+                        <img src="https://saleable-docs.s3.ap-south-1.amazonaws.com/others/1366-trolley-outline.gif" alt="">
+                            <h4>No Order Found</h4>
+                            <button routerLink="/">Browse More</button>
+                    </div>
+                </ng-container>
+                
+                <ng-template #showOrder>
+                    <div class="orders_listings" >
+                        <div class="order_wrapper" *ngFor="let item of orderListings">
+                            <div class="orders" *ngFor="let ordersDetail of item.orders">
+                            
+                                <div class="order_header" [ngClass]="{'orderCanceld': ordersDetail.cancellationReason}">
+                                    <ul>
+                                        <li>
+                                            <span>Order {{ordersDetail.cancellationReason ? 'Canceled' : 'Confirmed' }}</span>
+                                        </li>
+                                        <li>
+                                            Order Placed On
+                                            <span>{{item.productOrderDate | date: 'mediumDate'}}</span>
+                                        </li>
+                                        <li>
+                                            Order Id
+                                            <span>{{item.orderId}}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="order_body">
+                                    <div class="product_img">
+                                        <img [src]="ordersDetail.productImages[0]" alt=""   onerror="this.src=`https://saleable-docs.s3.ap-south-1.amazonaws.com/others/img-thumbnail.png`;">
+                                    </div>
+                                    <div class="product_desc">
+                                        <h4  routerLink="/product-detail/{{ordersDetail.productName}}/{{ordersDetail.productId}}">{{ordersDetail.productName}}</h4>
+                                        <ul>
+                                            <li *ngFor="let item of ordersDetail.selectedAttributes;let i = index">
+                                                <div class="input_field" [innerHtml]="setCartAttributes(item)"></div>
+                                            </li>
+                                            <li>
+                                                <div class="input_field"><span>QTY:</span> {{ordersDetail.productQuantity}}</div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="product_other_desc">
+                                        <h4>
+                                            <span>Total</span>
+                                            <strong>{{item.totalAmount | currency: 'INR'}}</strong>
+                                        </h4>
+                                       
+                                    </div>
+                                    <div class="product_other_desc">
+                                        <h4>
+                                            <span>Delivered To:</span>
+                                            <strong>{{item.address.name}}</strong> <br>
+                                            <strong>{{item.address.address}}</strong>
+
+                                        </h4>
+                                    </div>
+                                </div>
+                                <div class="refund_content" *ngIf="ordersDetail.productRefundDate">
+                                    <h4>Refund {{ordersDetail.refundStatus === "processed" ? 'Accepted': 'Processing' }} <span *ngIf="ordersDetail.refundId"> ({{ordersDetail.refundId}})</span> </h4>
+                                    <ul>
+                                        <li >
+                                            <span *ngIf="ordersDetail.isDelivered">
+                                                We'll pick up the item you wish to return, <strong>{{ordersDetail.productRefundDate}}</strong>. 
+                                            </span>
+                                        <span *ngIf="ordersDetail.refundAmount">
+                                            <strong>{{ordersDetail.refundAmount | currency:'INR' }}</strong> 
+                                            will be refunded to your Original payment mode within <strong>5-6</strong> business days <strong>(Bank holidays not included)</strong> after pick up is <strong>completed</strong>
+                                        </span>
+                                        
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="order_footer">
+                                    <div class="paid_by">
+                                        <div class="payment_method">
+                                            Paid By <span>{{item?.payment?.paymentMethod}}</span>
+                                        </div>
+                                        <div class="price_breakup" (click)="viewBreakUpPrice(item, ordersDetail)">
+                                            View BreakUp
+                                        </div>
+                                    </div>
+
+                                </div>
+                                 <div class="order_footer">
+                                    <button routerLink="../../review/{{item._id}}/{{ordersDetail._id}}">Rate and Review product</button>
+                                    <button>Track Order</button>
+                                    <button>Download Invoice</button>
+                                    <button *ngIf="ordersDetail.refundStatus !== 'processed'" routerLink="../../cancel-order/{{item._id}}/{{ordersDetail._id}}" [disabled]="ordersDetail.cancellationReason" >Cancel Order</button>
+                                </div>
+                        </div>
+                        </div>
+                    </div>
+                </ng-template>
+                
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="modal_wrapper" *ngIf="breakUpPrice">
+    <div class="modal_container ">
+            <div class="modal_header">
+                Payment Information
+                <span class="feather-x" (click)="breakUpPrice = false"></span>
+            </div>
+            <div class="modal_body">
+                <ul>
+                    <li>
+                        <div class="desc">
+                           {{productData?.orderItemDetail.productQuantity}} <span class="feather-x"></span> {{productData?.orderItemDetail.productName}}
+                        </div>
+                        <div class="price">
+                            {{ (productData?.orderItemDetail.productRegPrice * productData?.orderItemDetail.productQuantity) | currency: 'INR'}}
+                        </div>
+                    </li>
+                    <li>
+                        <div class="desc">
+                            Discounted Price
+                        </div>
+                        <div class="price">
+                            {{ (productData?.orderItemDetail.productSalePrice * productData?.orderItemDetail.productQuantity) | currency: 'INR'}}
+                        </div>
+                    </li>
+                    <li class="paymentMethod">
+                        Paid By <span>{{productData?.orderDetail?.payment.paymentMethod}}</span>
+                    </li>
+                </ul>
+            </div>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+::ng-deep body {
+    .home_wrapper {
+        .owl-nav {
+            position: absolute;
+            top: 49% !important;
+            right: 0 !important;
+            margin: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+    .receint_view{
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        .p_wrapper{
+            width: 19% !important;
+            margin: 5px;
+        }
+    }
+}

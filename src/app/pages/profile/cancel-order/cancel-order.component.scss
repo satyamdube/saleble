@@ -1,0 +1,178 @@
+@import '../../../../../vars';
+.review_wrapper{
+    width: 80%;
+    margin: 20px auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border: 1px solid #eee;
+    .review_left{
+        width: 75%;
+        border-right: 1px solid #eee;
+        .review_heading{
+            background: $color-gray;
+            padding: 9px;
+            font-size: 14px;
+            letter-spacing: 1px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .review_body{
+            padding: 10px;
+            ul{
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                width: 70%;
+           
+                li{
+                    display: flex;
+                    width: auto;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer;
+                    margin-right: 15px;
+                    position: relative;
+                    
+                    &:hover{
+                        .review_title{
+                            opacity: 1;
+                        }
+                        span{
+                            color: $color-orange !important;
+                        }
+                    }
+                    .review_title{
+                        position: absolute;
+                        padding: 8px;
+                        border: 1px solid #212121;
+                        border-radius: 2px;
+                        color: #fff;
+                        background: #212121;
+                        transition: opacity .3s ease-in-out;
+                        opacity: 0;
+                        top: -33px;
+                        left: -8px;
+                        pointer-events: none;
+                        font-size: 11px;
+                        font-weight: 500;
+                        line-height: 1.4;
+                        z-index: 5;
+                        max-width: 568px;
+                        min-width: 40px;
+                        text-align: center;
+                        display: flex;
+                        filter: none;
+                        box-shadow: 0 -1px 2px 0 rgba(0,0,0,.2);
+                        width: 80px;
+                        justify-content: center;
+                        align-items: center;
+                        letter-spacing: 1px;
+                        &::after{
+                            content: "";
+                            clip-path: polygon(49% 100%, 0 0, 100% 0);
+                            position: absolute;
+                            width: 15px;
+                            height: 6px;
+                            background: #212121;
+                            bottom: -7px;
+                            left: 30px;
+                        }
+                    }
+                    span{
+                        display: inline-block;
+                        position: relative;
+                        margin-left: 16px;
+                        font-size: 28px;
+                        color: #e0e0e0;
+                    }
+                }
+                .selectedReview{
+                    .review_title{
+                        opacity: 1;
+                    }
+                    span{
+                        color: $color-orange !important;
+                    }   
+                }
+            }
+            h4{
+                font-size: 15px;
+                letter-spacing: 1px;
+                font-weight: 500;
+            }
+            .input_field{
+                background: transparent;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: flex-start;
+                padding: 7px 0;
+                input, textarea, select{
+                    width: 100%;
+                    border: 2px solid $color-blue;
+                    padding: 5px;
+                }
+                input, select{
+                    height: 34px;
+                }
+                textarea{
+                    height: 70px;
+                }
+            }
+            .upload_img{
+                label{
+                    input{
+                        display: none;
+                    }
+                    .upload_button{
+                        width: 70px;
+                        height: 70px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        border: 2px dashed $color-gray;
+                        font-size: 20px;
+                        color: $color-gray;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+        .review_footer{
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px;
+            border-top: 1px solid #eee;
+            button{
+                background: $color-blue;
+                color: #fff;
+                border: none;
+                padding: 5px 20px;
+                font-weight: 700;
+                letter-spacing: 1px;
+                font-size: 13px;
+            }
+        }
+    }
+    .review_right{
+        width: 25%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        flex-direction: column;
+        img{
+            width: 80%;
+            border: 2px solid #ccc;
+            margin-bottom: 10px;
+        }
+        h4{
+            font-size: 15px;
+            letter-spacing: 1px;
+            font-weight: 500;
+            text-align: center;
+            margin-top: 10px;
+            word-break: break-all;
+        }
+    }
+}

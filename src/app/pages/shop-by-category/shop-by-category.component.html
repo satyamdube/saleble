@@ -1,0 +1,15 @@
+<div class="shop_by_category">
+    <div class="container-fluid">
+        <div class="common_heading">
+            <h2>Categories to bag</h2>
+        </div>
+        <!-- {{categoryList}} -->
+        <owl-carousel-o [options]="shopByCategory">
+            <ng-container *ngFor="let item of categoryList">
+                <ng-template carouselSlide>
+                    <img [src]="item.image" routerLink="../category/{{item.name}}/{{item._id}}" alt="">
+                </ng-template>
+            </ng-container>
+        </owl-carousel-o>
+    </div>
+</div>

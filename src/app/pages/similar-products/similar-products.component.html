@@ -1,0 +1,82 @@
+<div class="home_wrapper"  *ngIf="similarProducts?.length >= 1">
+    <div class="container-fluid">
+      <div class="common_heading" >
+        <h2>Similar products</h2>
+      </div>
+      <div class="receint_view" *ngIf="similarProducts?.length < 6">
+        <ng-container  *ngFor="let product  of similarProducts">
+          <div class="p_wrapper" (click)="openProductDetail(product.productName, product._id)">
+                <div class="p_img">
+                  <img [src]="product.productImages[0]" [alt]="product.productName" onerror="this.src=`https://saleable-docs.s3.ap-south-1.amazonaws.com/others/img-thumbnail2.gif`;">
+                </div>
+               
+                <div class="p_dec">
+                  <p> 
+                    {{product.productName}}
+                  </p>
+                  <div class="price_listing">
+                    <ul>
+                      <ng-container  *ngIf="product.productSalePrice; else showNormalPrice">
+                      
+                          <li>
+                              {{ product.productSalePrice  | currency:'INR'}}
+                          </li>
+                          <li>
+                              <span> {{ product.productRegPrice| currency:'INR'}}</span>
+                              <span>({{product.productDiscount}}% Off)</span>
+                          </li>       
+                      </ng-container>
+                      <ng-template #showNormalPrice>
+                          <li>
+                              {{ product.productRegPrice| currency:'INR'}}
+                          </li>
+                      </ng-template>
+                      
+                  </ul>
+                  </div>
+                </div>
+              </div>
+          </ng-container>
+       </div>
+       <div class="home_carousel" *ngIf="similarProducts?.length > 6">
+        <owl-carousel-o [options]="product_carousel">
+          <ng-container  *ngFor="let product  of similarProducts">
+          <ng-template carouselSlide>
+            <div class="p_wrapper" (click)="openProductDetail(product.productName, product._id)">
+              <div class="p_img">
+                <img [src]="product.productImages[0]" [alt]="product.productName" onerror="this.src=`https://saleable-docs.s3.ap-south-1.amazonaws.com/others/img-thumbnail2.gif`;">
+              </div>
+              
+              <div class="p_dec">
+                <p>
+                  {{product.productName}}
+                </p>
+                <div class="price_listing">
+                  <ul>
+                    <ng-container  *ngIf="product.productSalePrice; else showNormalPrice">
+                    
+                        <li>
+                            {{ product.productSalePrice  | currency:'INR'}}
+                        </li>
+                        <li>
+                            <span> {{ product.productRegPrice| currency:'INR'}}</span>
+                            <span>({{product.productDiscount}}% Off)</span>
+                        </li>       
+                    </ng-container>
+                    <ng-template #showNormalPrice>
+                        <li>
+                            {{ product.productRegPrice| currency:'INR'}}
+                        </li>
+                    </ng-template>
+                    
+                </ul>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+          </ng-container>
+        </owl-carousel-o>
+      </div>
+    </div>
+   
+  </div>

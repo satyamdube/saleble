@@ -1,0 +1,68 @@
+<div class="fix_width">
+    <div class="profile_grid">
+        <div class="profile_navigation_menu">
+            <app-navigations></app-navigations>
+        </div>
+        <div class="profile_component">
+            <div class="card_wrapper"  [formGroup]="profileForm">
+                <div class="card_header">
+                   <h4> General Information</h4>
+                </div>
+                <div class="card_detail">
+                    <div class="input_field">
+                        <label>First Name</label>
+                        <input placeholder="" type="text" formControlName="f_name">
+                    </div>
+                    <div class="input_field">
+                        <label>Last Name</label>
+                        <input placeholder="" type="text" formControlName="l_name">
+                    </div>
+                    <!-- [attr.disabled]="true" -->
+                    <div class="input_field">
+                        <label>Email</label>
+                        <input placeholder="" type="email"  formControlName="f_email">
+                    </div>
+                    <div class="input_field">
+                        <label>phone No.</label>
+                        <input placeholder="" type="text" [attr.disabled]="true" formControlName="f_phone" mask="0000-000-000">
+                    </div>
+                </div>
+                <div class="card_footer">
+                     <button [disabled]="profileForm.invalid || isLoading" [ngClass]="{'is_loading': isLoading}"  (click)="onSubmit()">
+                        <div class="button_text" *ngIf="!isLoading">Update Profile</div>
+                        <div class="circle"></div>
+                    </button>
+                </div>
+            </div>
+            <div class="card_wrapper mt-3"  [formGroup]="passwordUpdateForm">
+                <div class="card_header">
+                   <h4> Update Password</h4>
+                </div>
+                <div class="card_detail" id="password-form">
+                    <!-- <div class="input_field" *ngIf="!hideOldPassword">
+                        <label>Old Password</label>
+                        <input placeholder="" type="password"  formControlName="oldPassword">
+                    </div> -->
+                    <div class="input_field">
+                        <label>New Password</label>
+                        <input placeholder="" type="password" formControlName="newPassword">
+                    </div>
+                    <div class="input_field" >
+                        <label>Confirm  Password</label>
+                        <input placeholder="" type="password" formControlName="confirmPassword">
+                    </div>
+                   
+                   
+                </div>
+                <div class="card_footer">
+                     <button [disabled]="passwordUpdateForm.invalid || isLoading" [ngClass]="{'is_loading': isLoading}"  (click)="onUpdatePassword()">
+                        <div class="button_text" *ngIf="!isLoading">Update Password</div>
+                        <div class="circle"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

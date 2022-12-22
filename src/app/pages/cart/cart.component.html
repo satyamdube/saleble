@@ -1,0 +1,196 @@
+<div class="fix_width">
+    <div *ngIf="productsInCartListings?.length !== 0;else noDataFound" class="cart_detail ">
+        <div class="cart_left">
+            <ng-container *ngIf="isUserLoggedIn">
+                <div class="default_address" id="default_address_manage" *ngIf="defaultAddress; else addNewAddress">
+                    <h4>Delivered To: <span>{{defaultAddress?.name}}</span> <span> {{defaultAddress?.pincode}}</span>
+                    </h4>
+                    <p>{{defaultAddress?.address}}</p>
+                    <p> <strong>Mobile:</strong> {{defaultAddress?.mobile}}</p>
+                    <button class="changeAddress border_radius_5" (click)="changeAddressModal = true">Change Address</button>
+                </div>
+            </ng-container>
+            <ng-template #addNewAddress>
+                <div class="add_new_address">
+                    <p class="no-address-text">No Address Found!!</p>
+                    <button class="addNewAddress border_radius_5"  (click)="isModalOpen = true;"> <span class="feather-map-pin"></span> Add
+                        New Address</button>
+ 
+                </div>
+            </ng-template>
+
+            <h4>Total {{productsInCartListings?.length}} Items In Cart</h4>
+            <div class="pro_listings" *ngFor="let product of productsInCartListings">
+                <div class="product_img">
+                    <img [src]="product.productImages[0]" alt=""
+                        onerror="this.src=`https://saleable-docs.s3.ap-south-1.amazonaws.com/others/img-thumbnail.png`">
+                </div>
+                <div class="product_content">
+                    <h4 routerLink="../product-detail/{{product.productName}}/{{product._id}}">
+                        {{product.productName}}</h4>
+                    <h6>Sold By: <span>User Name</span></h6>
+                    <ul class="attribute">
+                        <li *ngFor="let item of product.selectedAttributes;let i = index">
+                            <div class="input_field" (click)="updatedAttributes(product, item)"
+                                [innerHtml]="setCartAttributes(item)"></div>
+                        </li>
+                        <li>
+                            <div class="input_field" (click)="updatedAttributes(product, 'qty')">
+                                <label> Qty</label>
+                                {{product.productQuantity}}
+                                <i class="feather-chevron-down"></i>
+
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="price_detail">
+                        <ul>
+                            <li>
+                                {{product?.productSalePrice ? 'Was' :'Now'}}: <span
+                                    [ngClass]="{'strike': product?.productSalePrice}">{{product?.productRegPrice | currency:'INR' :'symbol':'1.0'}}</span>
+                            </li>
+                            <ng-container *ngIf="product?.productSalePrice">
+                                <li>
+                                    Now: <span>{{product?.productSalePrice | currency:'INR' :'symbol':'1.0'}}</span>
+                                </li>
+                                <li>
+                                    Saving: <span>{{product?.productDiscount}}% Off</span>
+                                </li>
+                            </ng-container>
+                        </ul>
+                    </div>
+                </div>
+                <button class="remove_from_cart" (click)="removeItemFromCart(product)">
+                    <i class="feather-x"></i>
+                </button>
+            </div>
+        </div>
+        <div class="cart_right">
+            <h4>Price Details <span>({{productsInCartListings?.length}})</span> Items</h4>
+            <ul>
+                <li>
+                    Total MRP <span> {{cartDataMrp.totalMrp | currency: 'INR'}}</span>
+                </li>
+                <li>
+                    Discount MRP <span class="discountendMrp"> {{cartDataMrp.discountedMrp | currency: 'INR'}}</span>
+                </li>
+                <li>
+                    Coupon Discount <span> {{cartDataMrp.couponDiscount | currency: 'INR'}}</span>
+                </li>
+                <li>
+                    Convenience Fee <span> {{cartDataMrp.conveinceFee | currency: 'INR'}}</span>
+                </li>
+            </ul>
+            <div class="total_amount">
+                <h2>
+                    Total Amount
+                    <span> {{cartDataMrp.totalAmount | currency: 'INR'}}</span>
+                </h2>
+            </div>
+            <div class="convience_fee">
+                <img src="https://saleable-docs.s3.ap-south-1.amazonaws.com/others/transport-vehicle.png"
+                    alt="transport">
+                <h5>
+                    <!-- Yay! -->
+                    <!-- <span>
+                        No Convenience Fee
+                    </span> -->
+                    <span>
+                        {{'50' | currency: 'INR' }} Convenience Fee
+                    </span>
+                    on this order
+                </h5>
+            </div>
+            <div class="place_order_button">
+                <button (click)="proceedToCheckout()" class="border_radius_5"> {{isUserLoggedIn ? 'Place Order': 'Login To Place order'}}
+                </button>
+            </div>
+        </div>
+    </div>
+    <ng-template #noDataFound>
+        <div class="fix_width">
+            <div class="cart_empty">
+                <img src="https://saleable-docs.s3.ap-south-1.amazonaws.com/others/139-basket-outline.gif"
+                    alt="No Item In Cart">
+                <h4>There is nothing in your bag. Let's add some items.</h4>
+                <button routerLink="" class="border_radius_5">Continue Shopping</button>
+            </div>
+        </div>
+    </ng-template>
+</div>
+
+
+
+<div class="modal_wrapper" id="address_modal" *ngIf="changeAddressModal">
+    <div class="modal_container">
+        <div class="modal_heading">
+            <h4>Select Delivery Address</h4>
+            <button class="close-modal"  (click)="changeAddressModal = false; isProceedToCheckout = false"> <span
+                    class="feather-x"></span> </button>
+        </div>
+        <div class="modal_body">
+            <div class="address_listings">
+                <label *ngFor="let item  of addressListings">
+                    <input type="radio" [checked]="item.isChecked" (click)="onSelectAddress(item)" name="address"
+                        value="{{item._id}}">
+                    <div class="address_detail">
+                        <h5>{{item.name}} <span *ngIf="item.defaultAddress">Default</span> </h5>
+                        <h4>{{item.address}}</h4>
+                        <p>{{item.city}}-{{item.pincode}}</p>
+                    </div>
+                </label>
+
+            </div>
+        </div>
+        <div class="modal_footer">
+            <ng-container *ngIf="!isProceedToCheckout; else openGatewayModal">
+                <a href="javascript:void(0)" (click)="isModalOpen = true;" >Add New Address</a>
+            </ng-container>
+            <ng-template #openGatewayModal>
+                <button (click)="payNow()" class="border_radius_5">Pay VIA Other Method</button>
+                <button (click)="cashOnDelivery()" class="border_radius_5">Pay VIA COD</button>
+            </ng-template>
+        </div>
+    </div>
+</div>
+
+<div class="modal_wrapper attribute_modal" id="address_modal" *ngIf="showEditModal">
+    <div class="modal_container">
+        <div class="modal_heading">
+            <h4>Update Items</h4>
+            <button class="close-modal" (click)="showEditModal = false"> <span class="feather-x"></span> </button>
+        </div>
+        <div class="modal_body">
+            <ul class="attribute">
+                <li *ngFor="let item of attributeData?.productAttributes">
+                    <div class="input_field">
+                        <label for="attribute">Select {{item.title}}</label>
+                        <select id="attribute" (change)="onChangeAttribute($event.target.value, item.title)">
+                            <option value="-1" disabled selected>Select {{item.title}}</option>
+                             <ng-container *ngFor="let item of item.attribute">
+                                <option  value="{{item}}">{{item}}</option>
+                            </ng-container>
+                        </select>
+                    </div>
+                </li>
+                <li>
+                    <div class="input_field" *ngIf="productStockQuantityFromServer > 1">
+                        <label for="quantity">Select Quantity</label>
+                        <select id="quantity" (change)="onChangeAttribute($event.target.value, 'qty')" [(ngModel)]="selectedQuantity">
+                             <ng-container
+                                *ngFor="let item of [].constructor(productStockQuantityFromServer); let i  = index">
+                                <option [value]="i + 1"  *ngIf=" (i + 1) <= productStockQuantityFromServer ">{{i + 1}}
+                                </option>
+                            </ng-container>
+                        </select>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="modal_footer">
+            <button (click)="onUpdateCart()" class="border_radius_5">Done</button>
+
+        </div>
+    </div>
+</div>
+<app-add-address *ngIf="isModalOpen" ></app-add-address>

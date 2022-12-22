@@ -1,0 +1,178 @@
+<div class="venor_bg">
+
+    <div class="vendor_details">
+        <div class="container">
+            <div class="vendor_detail_header">
+                <div class="img_icon">
+                    <img src="https://saleable-docs.s3.ap-south-1.amazonaws.com/icons/shop.png" alt="">
+                </div>
+                <div class="vendor_name">
+                    <h4>{{sellerData?.sellerInfo.f_brandname}}</h4>
+                    <p> <span>{{sellerData?.allProductRating}}★</span> Positive Seller Ratings</p>
+                </div>
+            </div>
+            <div class="vendor_body">
+                This store has been open since {{sellerData?.sellerInfo.f_creationdate}}
+            </div>
+            <div class="share_stores">
+
+                <button (click)="shareMyProducts()">
+                    <span class="feather-share-2" ></span>
+                    Share Store
+                </button>
+
+            </div>
+        </div>
+        
+    </div>  
+</div>
+<div class="product_detail_grid ">
+    
+    <div class="fix_width">
+        <div class="vendor_card">
+          
+            <div class="vendor_details">
+                <h1> Low Returns Seller</h1>
+                <div class="min_detail_list">
+                   <ul>
+                       <li>Always in Stock<span>99%</span></li>
+                       <li>Deliver on Time<span>81%</span></li>
+                       <li>Product as Described<span>70%</span></li>
+                   </ul>
+                </div>
+            </div>
+            <div class="vendor_details">
+                <h1> Detailed Seller Rating</h1>
+                 <div class="seller_rating">
+                     <ul>
+                         <li>
+                             <div class="rating">
+                                 <div class="rating_slag">
+                                    <span>5</span> ★
+                                 </div>
+                                 
+                                  <div class="bar">
+                                    <div class="bar_inner" [ngStyle]="{'width' : sellerData?.rating?.one >= 100 ? 100 : sellerData?.rating?.five + '%' }">
+
+                                    </div>
+                                 </div>
+                                 <div class="rating_no">
+                                     ({{sellerData?.rating?.five}})
+                                 </div>
+                             </div>
+                         </li>
+                         <li>
+                            <div class="rating">
+                                <div class="rating_slag">
+                                    <span>4</span> ★
+                                 </div>
+                                 
+                                 <div class="bar">
+                                    <div class="bar_inner" [ngStyle]="{'width' : sellerData?.rating?.one >= 100 ? 100 : sellerData?.rating?.four + '%' }">
+
+                                    </div>
+                                </div>
+                                <div class="rating_no">
+                                    ({{sellerData?.rating?.four}})
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="rating">
+                                <div class="rating_slag">
+                                    <span>3</span> ★
+                                 </div>
+                                 
+                                 <div class="bar">
+                                    <div class="bar_inner" [ngStyle]="{'width' : sellerData?.rating?.one >= 100 ? 100 : sellerData?.rating?.three + '%' }">
+
+                                    </div>
+                                </div>
+                                <div class="rating_no">
+                                    ({{sellerData?.rating?.three}})
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="rating">
+                                <div class="rating_slag">
+                                    <span>2</span> ★
+                                 </div>
+                                 
+                                 <div class="bar">
+                                    <div class="bar_inner" [ngStyle]="{'width' : sellerData?.rating?.one >= 100 ? 100 : sellerData?.rating?.two + '%' }">
+
+                                    </div>
+                                </div>
+                                <div class="rating_no">
+                                    ({{sellerData?.rating?.two}})
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="rating">
+                                <div class="rating_slag">
+                                    <span>1</span> ★
+                                 </div>
+                                 
+                                 <div class="bar">
+                                    <div class="bar_inner" [ngStyle]="{'width' : sellerData?.rating?.one >= 100 ? 100 : sellerData?.rating?.one + '%' }">
+
+                                    </div>
+                                </div>
+                                <div class="rating_no">
+                                    ({{sellerData?.rating?.one}})
+                                </div>
+                            </div>
+                        </li>
+                     </ul>
+                 </div>
+            </div>
+            
+        </div>
+    </div>
+    <div class="fix_width">
+        <div class="product_listing_grid" >
+            <ng-container *ngFor="let product of sellerData?.products">
+
+                <div class="p_wrapper"  routerLink="/product-detail/{{product.productName}}/{{product._id}}">
+                    <div class="p_img"  [ngClass]="{'outOfStock': product?.productStockQuantity === 0}">
+                        <img [src]="product.productImages[0]" [alt]="product.productName"
+                            onerror="this.src=`https://saleable-docs.s3.ap-south-1.amazonaws.com/others/img-thumbnail2.gif`;">
+                            <div class="out_of_stock_text" *ngIf="product?.productStockQuantity === 0">
+                                {{outOfStock.slug}}
+                            </div>
+                    </div>
+                     
+                    <div class="p_dec">
+                        <p class="p_name">
+                            {{product.productName }}
+                        </p>
+                        <div class="price_listing">
+                            <ul>
+                                <ng-container *ngIf="product.productSalePrice; else showNormalPrice">
+
+                                    <li>
+                                        {{ product.productSalePrice | currency:'INR'}}
+                                    </li>
+                                    <li>
+                                        <span> {{ product.productRegPrice| currency:'INR'}}</span>
+                                        <span>({{product.productDiscount}}% Off)</span>
+                                    </li>
+                                </ng-container>
+                                <ng-template #showNormalPrice>
+                                    <li>
+                                        {{ product.productRegPrice| currency:'INR'}}
+                                    </li>
+                                </ng-template>
+                            </ul>
+                        </div>
+                       
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+  
+    </div>
+
+</div>

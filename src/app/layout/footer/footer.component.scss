@@ -1,0 +1,208 @@
+@import "../../../../vars";
+::ng-deep body{
+    #footer-top{
+        background: #f8f8f8;
+        padding: 20px 0;
+        margin-top: 20px;
+        border-top: 2px solid #aee5ff;
+        border-bottom: 2px solid #aee5ff;
+        .container-fluid{
+            display: flex;
+            justify-content: space-between;
+            .top_left {
+                width: 50%;
+                h4{
+                    font-size: 20px;
+                    font-weight: 700;
+                    letter-spacing: 1px;
+                    margin-bottom: 4px;
+                }
+                p{
+                    margin: 0;
+                    font-size: 14px;
+                    letter-spacing: 1px;
+                    text-transform: capitalize;
+                    opacity: .7;
+                    font-weight: 300;
+                }
+            }
+            .top_right {
+                width: 50%;
+                ul{
+                    display: flex;
+                    width: 100%;
+                    justify-content: flex-end;
+                    align-items: center;
+                    margin: 0;
+                    li{
+                        margin: 0 20px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        .contact_icon{
+                            margin-right: 10px;
+                            span{
+                                width: 30px;
+                                height: 30px;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                border-radius: 50%;
+                                border: 2px solid $color-blue;
+                                color: $color-blue;
+                                font-weight: 700;
+                                background: #fff;
+                            }
+                        }
+                        .contact_content{
+                            h4{
+                                font-size: 12px;
+                                margin: 0;
+                                font-weight: 500;
+                                letter-spacing: 1px;
+                            }
+                            a{
+                                font-size: 20px;
+                                letter-spacing: 1px;
+                                font-weight: 700;
+                                color: $color-black;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+       
+    }
+    #footer-mid, #footer-contact{
+        .container-fluid{
+            display: flex;
+            justify-content: space-between;
+            .footer_links{
+                padding: 20px 0;
+                h3{
+                    margin: 0;
+                    font-size: 16px;
+                    font-weight: 600;
+                    letter-spacing: 1px;
+                }
+                a{
+                    display: flex;
+                    color: $color-black;
+                    font-size: 12px;
+                    letter-spacing: 1px;
+                    text-transform: capitalize;
+                    margin: 5px 0;
+                    p{
+                        margin: 0 !important;
+                    }
+                }
+            }
+        }
+    }
+    #footer-contact{
+        .contact_left{
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            h4{
+                margin: 0;
+                font-size: 16px;
+                font-weight: 600;
+                letter-spacing: 1px;
+            }
+            ul{
+                display: flex;
+                margin: 10px 0;
+                justify-content: center;
+                width: 100%;            
+                li{
+                    display: flex;
+                    width: 25%;   
+                    margin-right: 10px;
+                    cursor: pointer;             
+                    img{
+                        max-width:100%;
+                    }
+                    &:first-child{
+                        img{
+                            height:46px;
+                        }
+                    }
+                }
+            }
+        }
+        .contact_right{
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            h4{
+                margin: 0;
+                font-size: 16px;
+                font-weight: 600;
+                letter-spacing: 1px;
+            }
+            ul{
+                display: flex;
+                width:auto;
+                justify-content: space-around;
+                margin: 16px 0;
+                li{
+                    display: block;
+                    margin:0px 10px;
+                    a{
+                        color: $color-blue;
+                        display: flex;
+                        width: 30px;
+                        height: 30px;
+                        border: 2px solid $color-blue;
+                        justify-content: center;
+                        align-items: center;
+                        border-radius: 50%;
+                    }
+                }
+            }
+        }
+    }
+    #footer-bottom{
+        background: #f8f8f8;
+        padding: 15px 0;
+        margin-top: 20px;
+        border-top: 2px solid #aee5ff;
+       .container-fluid{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .copyright_left{
+            p{
+                margin: 0;
+                font-size: 13px;
+                letter-spacing: 1px;
+                font-weight: 700;
+            }
+        }
+        .copyright_right{
+            width: 60%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            a{
+                margin: 0;
+                display: flex;
+                color: $color-black;
+                font-size: 12px;
+                letter-spacing: 1px;
+                text-transform: capitalize;
+                p{
+                    margin: 0;
+                }
+            }
+        }
+       }
+       
+    }
+}

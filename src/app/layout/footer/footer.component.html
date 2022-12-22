@@ -1,0 +1,90 @@
+<div id="footer-top">
+    <div class="container-fluid">
+        <div class="top_left">
+            <h4>We're Always Here To Help</h4>
+            <p>Reach out to us by any channel</p>
+        </div>
+        <div class="top_right">
+            <ul>
+                <li>
+                    <div class="contact_icon">
+                        <span class="feather-alert-circle"></span>
+                    </div>
+                    <div class="contact_content">
+                        <h4>
+                            Help Center
+                        </h4>
+                        <a href="mailto:help.saleable.in">help.saleable.in</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="contact_icon">
+                        <span class="feather-mail"></span>
+                    </div>
+                    <div class="contact_content">
+                        <h4>
+                            Email Support
+                        </h4>
+                        <a href="mailto:care@saleable.in">care@saleable.in</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div id="footer-mid">
+    <div class="container-fluid">
+        <div class="footer_links" *ngFor="let footerLink of categoryList">
+            <div class="footerLinks Full" *ngIf="footerLink.subCategory.length >= 1">
+                <h3>{{footerLink.name}}</h3>
+                <ng-container *ngFor="let item of footerLink.subCategory">
+                    <a href="javascript:void(0)" routerLink="product/{{footerLink.name}}/{{footerLink._id}}/{{item.title}}/{{item._id}}" >{{item.title}}</a>
+
+                </ng-container>                
+            </div>
+        </div>
+    
+    </div>
+</div>
+<div id="footer-contact">
+    <div class="container-fluid">
+        <div class="contact_left">
+            <h4>Shop On the Go</h4>
+            <ul>
+                <li><img src="https://saleable-static.s3.ap-south-1.amazonaws.com/appsotre.svg" alt="appsotre"></li>
+                <li><img src="https://saleable-static.s3.ap-south-1.amazonaws.com/playstore.svg" alt="playstore"></li>
+            </ul>
+        </div>
+        <div class="contact_right">
+            <h4>Contact Us</h4>
+            <ul>
+                <li><a href="#"><span class="feather-facebook"></span></a></li>
+                <li><a href="#"><span class="feather-twitter"></span></a></li>
+                <li><a href="#"><span class="feather-instagram"></span></a></li>
+                <li><a href="#"><span class="feather-linkedin"></span></a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div id="footer-bottom">
+    <div class="container-fluid">
+        <div class="copyright_left">
+            <p>Copyright © {{currentYear}}. Saleable All Rights Reserved</p>
+        </div>
+        <div class="copyright_right">
+                 <a target="_blank" href="https://seller.saleable.in/" class="link mx-1">
+                    <p class="mx-1">Sell</p>
+                </a>
+ 
+                <a class="link mx-1" href="#" routerLink="/returnpolicy">
+                    <p class="mx-1">Return &  Warranty Policy</p>
+                </a><a class="link mx-1" href="#" routerLink="/termofuse">
+                    <p class="mx-1">Term of use</p>
+                </a><a class="link mx-1" href="#" routerLink="/termofsale">
+                    <p class="mx-1">Term of sale</p>
+                </a><a class="link mx-1" href="#" routerLink="/privacyPolicy">
+                    <p class="mx-1">Privacy Policy</p>
+                </a>
+        </div>
+    </div>
+</div>

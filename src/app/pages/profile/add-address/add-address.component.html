@@ -1,0 +1,78 @@
+<div class="modal_wrapper" id="address_modal" >
+    <div class="modal_container">
+            <div class="modal_heading">
+               <h4>{{addressId ? "Update" : "Add New"}} Address</h4>
+                <button class="close-modal" (click)="resetForm()"> <span class="feather-x"></span> </button>
+            </div>
+        <div class="modal_body">
+                <div class="modal_form" [formGroup]="addressFrom">
+                    <div class="input_field ">
+                        <label class="required">Name</label>
+                        <input type="text" formControlName="name">
+                    </div>
+                    <div class="input_field">
+                        <label class="required">Mobile No.</label>
+                        <input type="text" formControlName="mobile" mask="(000) 000 00 00">
+                    </div>
+
+                    <div class="input_field">
+                        <label class="required">Locality/Town</label>
+                        <input type="text" formControlName="location">
+                    </div>
+                    <div class="input_field">
+                        <label class="required">Address</label>
+                        <input type="text" formControlName="address">
+                    </div>
+                    <div class="input_field">
+                        <label class="required" >Pincode</label>
+                        <input type="text" formControlName="pincode" (keyup)="getlocationByPincode($event.target.value)">
+                    </div>
+                    <div class="input_field">
+                        <label class="required">City</label>
+                        <input type="text" formControlName="city">
+                    </div>
+                    <div class="input_field">
+                        <label class="required">State</label>
+                        <input type="text" formControlName="state">
+                    </div>
+                 
+                    <div class="input_field">
+                        <label class="required">LandMark</label>
+                        <input type="text" formControlName="landmark">
+                    </div>
+                    <div class="input_field">
+                        <label class="required">Email</label>
+                        <input type="text" formControlName="f_email">
+                    </div>
+                    <div class="input_field">
+                        <label class="required">Default Address</label>
+                        <select formControlName="defaultAddress">
+                            <option [ngValue]=true>Yes</option>
+                            <option [ngValue]=false>No</option>
+                        </select>
+                    </div>
+                    <div class="input_field">
+                        <label class="required">Address Type</label>
+                        <select formControlName="addressType">
+                            <option value=home>Home</option>
+                            <option value=office>Office</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input_field">
+                        <label class="">Alternative Mobile No.</label>
+                        <input type="text" formControlName="AlternativePhone" mask="0000-000000">
+                    </div>
+                </div>
+        </div>
+        <div class="modal_footer">
+             <button [disabled]="addressFrom.invalid || isLoading" [ngClass]="{'is_loading': isLoading}"  (click)="onSubmit()">
+                <div class="button_text" *ngIf="!isLoading">
+                    {{addressId ?  "Update" : "Add"}}
+                </div>
+                <div class="circle"></div>
+            </button>
+        </div>
+    </div>
+</div>
+

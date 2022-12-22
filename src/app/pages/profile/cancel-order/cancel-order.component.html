@@ -1,0 +1,34 @@
+<div class="fix_width">
+    <div class="review_wrapper">
+        <div class="review_left">
+            <div class="review_heading">
+               Cancel Order
+            </div>
+            <div class="review_body" [formGroup]="productCancelForm">
+                     
+                     <div class="input_field ">
+                        <label for="title" class="required" >Reason For Cancellation</label>
+                        <select formControlName="cancellationReason">
+                            <option value='null' disabled>Select Reason</option>
+                            <ng-container *ngFor="let item of cancelReasons">
+                                <option value="{{item.title}}">{{item.title}}</option>
+                            </ng-container>
+                            
+                        </select>
+                     </div>
+                    <div class="input_field">
+                        <label for="descriptions" class="required">Comment</label>
+                        <textarea  id="comment" formControlName="comment"></textarea>
+                    </div>
+                   
+            </div>
+            <div class="review_footer">
+                <button [disabled]="productCancelForm.invalid" (click)="onSubmit()">Submit</button>
+            </div>
+        </div>
+        <div class="review_right">
+            <img [src]="orderDetail?.productImages[0]" alt="">
+            <h4>{{orderDetail?.productName}}</h4>
+        </div>
+    </div>
+</div>

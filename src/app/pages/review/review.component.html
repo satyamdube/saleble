@@ -1,0 +1,54 @@
+<div class="fix_width">
+    <div class="review_wrapper">
+        <div class="review_left">
+            <div class="review_heading">
+                Rate this product
+            </div>
+            <div class="review_body" [formGroup]="reviewForm">
+                    <ul>
+                        <ng-container *ngFor="let item of reviewElement; let i = index">
+                            <li (click)="onSelectPoint(item)" [ngClass]="{'selectedReview': item.point === selectedPoints}" >
+                                <div class="review_title">
+                                    {{item.title}}
+                                </div>
+                                <span>★</span>
+                            </li>
+                         </ng-container>
+                    </ul>
+                    <h4>Review this product</h4>
+                    <div class="input_field ">
+                        <label for="title" class="required" >Title</label>
+                        <input type="text" id="title" formControlName="title">
+                    </div>
+                    <div class="input_field">
+                        <label for="descriptions" class="required">Descriptions</label>
+                        <textarea name="" id="descriptions" formControlName="description"></textarea>
+                    </div>
+                    <h4>Add Photo</h4>
+                    <div class="upload_img">
+                       <label>
+                       
+                       </label>
+                       <label *ngIf="!reviewImg">
+                        <input type="file"  #reviewImg type="file" accept="image/x-png,image/gif,image/jpeg,image/webp"  id="reviewImg" (change)="processFile(reviewImg)">  
+                         <div class="upload_button">
+                             <span class="feather-camera"></span>
+                         </div>
+                    </label>
+                    <div *ngIf="reviewImg" class="review_view"    [ngStyle]="{ 'background-image': 'url(' + reviewImg + ')'}">
+                        <button (click)="reviewImg = null">
+                            <span class="feather-x"></span>
+                        </button>
+                     </div>
+                    </div>
+            </div>
+            <div class="review_footer">
+                <button [disabled]="reviewForm.invalid" (click)="onSubmit()">Submit</button>
+            </div>
+        </div>
+        <div class="review_right">
+            <img [src]="orderDetail?.productImages[0]" alt=""   onerror="this.src=`https://saleable-docs.s3.ap-south-1.amazonaws.com/others/img-thumbnail2.gif`;">
+            <h4>{{orderDetail?.productName}}</h4>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+<div class="fix_width">
+    <div class="login_to_view" *ngIf="!isUserLoggedIn; else shoWishList">
+        <h4>PLEASE LOG IN        </h4>
+        <p>Login to view items in your wishlist.</p>
+        <img src="https://saleable-docs.s3.ap-south-1.amazonaws.com/others/107-box-package-open-outline.gif">
+        <button (click)="proceedToCheckout()">Login</button>
+    </div>
+    <ng-template #shoWishList>
+        <h4>My Wishlist <span>{{wishListProduct?.length}} Items</span> </h4>
+        <div class="product_lists_in_wishlist" >
+            <div class="product_grid" *ngFor="let product of wishListProduct">
+                <button class="remove" (click)="deleteWishlistItem(product._id)">
+                    <i class="feather-x"></i>
+                </button>
+                <div class="p_img" routerLink="/product-detail/{{product.productId.productName}}/{{product.productId._id}}">
+                    <img [src]="product.productId.productImages[0]" [alt]="product.productName"
+                    onerror="this.src=`https://saleable-docs.s3.ap-south-1.amazonaws.com/others/img-thumbnail.png`;">
+                </div>
+                <div class="p_desc" routerLink="/product-detail/{{product.productId.productName}}/{{product.productId._id}}">
+                    <h4>
+                        {{product.productId.productName }}
+                    </h4>
+                    <div class="price_listing">
+                        <ul>
+                            <ng-container *ngIf="product.productId.productSalePrice; else showNormalPrice">
+    
+                                <li>
+                                    {{ product.productId.productSalePrice | currency:'INR'}}
+                                </li>
+                                <li>
+                                    <span> {{ product.productId.productRegPrice| currency:'INR'}}</span>
+                                    <span>{{product.productId.productDiscount}}% Off</span>
+                                </li>
+                            </ng-container>
+                            <ng-template #showNormalPrice>
+                                <li>
+                                    {{ product.productId.productRegPrice| currency:'INR'}}
+                                </li>
+                            </ng-template>
+                        </ul>
+                    </div>
+                    <div class="view_product">
+                        <button  routerLink="/product-detail/{{product.productId.productName}}/{{product.productId._id}}" >View product</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+    </ng-template>
+    
+</div>

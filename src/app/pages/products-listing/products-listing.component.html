@@ -1,0 +1,232 @@
+<div class="page_breadcrumb">
+    <ul>
+        <li *ngIf="pageSerachType === 'brand'">
+            <strong>
+                {{pageSerachType | lowercase }}
+            </strong>
+        </li>
+        <ng-container *ngFor="let item of pageBreadCrumb; let i = index">
+            <li *ngIf="i === 1 || i === 2">
+                {{convertPercentageIntoSpace(item)}}
+            </li>
+        </ng-container>
+        <li>
+            {{linkType}}
+        </li>
+    </ul>
+</div>
+<div class="product_detail_grid ">
+    
+    <div class="fix_width">
+        <div class="filter_mobile_grid">
+            <ul>
+                <li>
+                    <button (click)="showFilter = !showFilter"  >
+                        
+                        <strong *ngIf="!showFilter">
+                          Filter  <span class="feather-filter"></span> 
+                        </strong>
+                        <strong *ngIf="showFilter">
+                          Close  <span class="feather-x"></span> 
+                        </strong>
+                      </button>
+                </li>
+                <li>
+                    <button (click)="clearFillter()">Reset <span class="feather-rotate-cw"></span> </button>                   
+                </li>
+            </ul>
+        </div>
+        <div class="product_filter" [ngClass]="{'showFilterInMobile': showFilter}">
+            <!-- Brand Filter -->
+            <!-- <div class="filter_wrapper">
+                <div class="filter_heading">
+                    <h4 class="filter_heading_content">Brand</h4>
+                </div>
+                <div class="filter_body">
+                    <div class="filter_input">
+                        <label *ngFor="let item of brandDetail">
+                            <input type="checkbox" [checked]="item.isChecked" (change)="selectBrand($event.target)"
+                                name="brand" value="{{item._id}}|{{item.title}}">
+                            {{item.title}}
+                        </label>
+                    </div>
+                </div>
+            </div> -->
+            <div class="filter_wrapper">
+                <div class="filter_heading">
+                    <h4 class="filter_heading_content">Price</h4>
+                </div>
+                <div class="filter_body">
+                    <div class="radio_listings" >
+                        <label *ngFor="let Item of priceRanges; let i = index;">
+                            <input type="radio"   (click)="selectPrice($event.target)"
+                                name="price" value="{{Item.from}}/{{Item.to}}">
+                                {{Item.from | currency: 'INR' :'symbol':'1.0' }}
+                                 to 
+                                 <ng-container *ngIf="Item.to === 9000">
+                                    {{Item.to | currency: 'INR' :'symbol':'1.0'}} and above
+                                 </ng-container>
+                                 <ng-container *ngIf="Item.to !== 9000">
+                                    {{Item.to | currency: 'INR' :'symbol':'1.0'}} 
+                                 </ng-container>
+                                 
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="filter_wrapper">
+                <div class="filter_heading">
+                    <h4 class="filter_heading_content">Ratings</h4>
+                </div>
+                <div class="filter_body">
+                    <div class="radio_listings" >
+                        <label *ngFor="let Item of ratings">
+                            <input type="radio" name="ratings"  (click)="selectRating($event.target)"  value="{{Item.title}}">
+                            {{Item.title}} <span class="fa fa-star checked"></span> and above
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="filter_wrapper">
+                <div class="filter_heading">
+                    <h4 class="filter_heading_content">Discounts</h4>
+                </div>
+                <div class="filter_body">
+                    <div id="discount">
+                        <label *ngFor="let Item of discountRanges">
+                            <!-- [checked]="filter.discount > 10"  -->
+                            <input type="radio" (click)="selectDiscout($event.target)"
+                                name="discount" value="{{Item.value}}">
+                            {{Item.title}}
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="products_listings">
+            <div class="product_listings_header">
+                <div class="headers">
+                    <span>{{productData?.length}}</span>
+                    Results For
+                    <span>"{{linkType}}"</span>
+                </div>
+                <div class="header_filter">
+                    <ul>
+                        <li> Sort By
+                            <select  (change)="onSortPrice($event.target.value)">
+                                <!-- <option value="recommended">Recommended</option> -->
+                                <option value="desc">Price: High To Low</option>
+                                <option value="asc">Price: Low To High</option>
+                            </select>
+                        </li>
+                        <li> Display
+                            <select >
+                                <option value="1">50 Per Page</option>
+                                <option value="2">100 per Page</option>
+                                <option value="3">150 Per Page</option>
+                            </select>
+                        </li>
+                        <li>
+                            {{toggleGirdView ? 'List' : 'Gird'}}
+                            <div class="grid_icons" (click)="toggleGirdView = !toggleGirdView">
+                                <span [ngClass]="{'feather-grid': !toggleGirdView, 'feather-list': toggleGirdView}"></span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="selected_product_filter_listings"
+                *ngIf="filter.productBrand.length >= 1 || filter.discount !== 0 || filter.price_range.from >= 100 || filter.productAttributes.length >= 1 ">
+                <ul>
+                    <li>Fillter By:</li>
+                    <ng-container *ngIf="filter.productBrand.length >= 1">
+                        <!--  brand Filter Listings -->
+                        <li *ngFor="let item of filter.productBrand" class="filter_tab">
+                            Brand: <span>{{item.brand}}</span>
+                            <!-- <button (click)="removeFilter(item,'brand')" class="feather-x"></button> -->
+                        </li>
+                    </ng-container>
+                    <ng-container *ngIf="filter.discount !== 0">
+                        <!-- Discount Filter Listings -->
+                        <li class="filter_tab">
+                            Discount: <span>{{filter.discount}} % and above</span>
+                            <button (click)="removeFilter('','discount')" class="feather-x"></button>
+                        </li>
+                    </ng-container>
+
+                    <ng-container *ngIf="filter.price_range.from >= 100">
+                        <!-- Discount Filter Listings -->
+                        <li class="filter_tab">
+                            Price: <span>{{filter.price_range.from | currency: 'INR' :'symbol':'1.0'}} to {{filter.price_range.to | currency: 'INR' :'symbol':'1.0'}}</span>
+                            <!--<button (click)="removeFilter('','discount')" class="feather-x"></button>-->
+                        </li>
+                    </ng-container>
+                    <ng-container *ngIf="filter.productAttributes.length >= 1">
+                        <!-- Discount Filter Listings -->
+                        <li *ngFor="let item of filter.productAttributes" class="filter_tab">
+                            Color: <span>{{item}}</span>
+                            <button (click)="removeFilter(item,'color')" class="feather-x"></button>
+                        </li>
+                    </ng-container>
+                     <li class="mb_hidden" ><button (click)="clearFillter()">Clear All</button></li>
+                </ul>
+            </div>
+            <div class="product_listing_body">
+                <ng-container *ngIf="productData?.length >= 1; else noDataFound">
+                    <ng-container *ngFor="let product of productData">
+
+                        <div class="p_wrapper" [ngClass]="{'list-view': toggleGirdView}" routerLink="/product-detail/{{product.productName}}/{{product._id}}">
+                            <div class="p_img"  [ngClass]="{'outOfStock': product?.productStockQuantity === 0}">
+                                <img [src]="product.productImages[0]" [alt]="product.productName"
+                                    onerror="this.src=`https://saleable-docs.s3.ap-south-1.amazonaws.com/others/img-thumbnail2.gif`;">
+                                    <div class="out_of_stock_text" *ngIf="product?.productStockQuantity === 0">
+                                        {{outOfStock.slug}}
+                                    </div>
+                            </div>
+                             
+                            <div class="p_dec">
+                                <p class="p_name">
+                                    {{product.productName }}
+                                </p>
+                                <div class="price_listing">
+                                    <ul>
+                                        <ng-container *ngIf="product.productSalePrice; else showNormalPrice">
+
+                                            <li>
+                                                {{ product.productSalePrice | currency:'INR' :'symbol':'1.0'}}
+                                            </li>
+                                            <li>
+                                                <span> {{ product.productRegPrice| currency:'INR' :'symbol':'1.0'}}</span>
+                                                <span>{{product.productDiscount}}% Off</span>
+                                            </li>
+                                        </ng-container>
+                                        <ng-template #showNormalPrice>
+                                            <li>
+                                                {{ product.productRegPrice | currency:'INR' :'symbol':'1.0'}}
+                                            </li>
+                                        </ng-template>
+                                    </ul>
+                                </div>
+                                <ng-container *ngIf="toggleGirdView">
+                                    <h6>Description</h6>
+                                    <div class="product_small_decriptions"[innerHtml]="product.productDescription"></div>
+                                 </ng-container>
+                            </div>
+                        </div>
+                    </ng-container>
+                </ng-container>
+                <ng-template #noDataFound>
+                    <div class="no_data_found">
+                        <img src="https://saleable-docs.s3.ap-south-1.amazonaws.com/others/error-no-search-results_2353c5.png"
+                            alt="no_data_found">
+                        <h4>Sorry, no results found!</h4>
+                    </div>
+                </ng-template>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>

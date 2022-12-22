@@ -1,0 +1,72 @@
+<div class="fix_width">
+    <div class="container-fluid">
+        <div class="category_wrapper ">
+            <div class="offers mt-5" *ngIf="offerDetail">
+                <img src="{{offerDetail?.img}}" alt="offer" (click)="reditectToOffer(offerDetail)">
+            </div>
+            
+            <div class="product_listing_body" *ngIf="productData?.length >= 1 && offerDetail">
+                <ng-container *ngFor="let product of productData; let i = index;">
+                    <div class="p_wrapper" *ngIf="i <= 15"
+                        routerLink="/product-detail/{{product.productName}}/{{product._id}}">
+                        <div class="p_img">
+                            <img [src]="product.productImages[0]" [alt]="product.productName"
+                                onerror="this.src=`https://saleable-docs.s3.ap-south-1.amazonaws.com/others/img-thumbnail2.gif`;">
+                        </div>
+                        <!-- <div class="p_wishlist">
+                                    <span class="feather-heart"></span> wishlist
+                                </div> -->
+                        <div class="p_dec">
+                            <p class="p_name">
+                                {{product.productName }}
+                            </p>
+                            <div class="price_listing">
+                                <ul>
+                                    <ng-container *ngIf="product.productSalePrice; else showNormalPrice">
+
+                                        <li>
+                                            {{ product.productSalePrice | currency:'INR'}}
+                                        </li>
+                                        <li>
+                                            <span> {{ product.productRegPrice| currency:'INR'}}</span>
+                                            <span>{{product.productDiscount}}% Off</span>
+                                        </li>
+                                    </ng-container>
+                                    <ng-template #showNormalPrice>
+                                        <li>
+                                            {{ product.productRegPrice| currency:'INR'}}
+                                        </li>
+                                    </ng-template>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+
+            <!-- Shop By Category -->
+            <!-- <app-shop-by-category></app-shop-by-category> -->
+            <!-- Shop By Category End-->
+            <div class="container-fluid mt-5">
+                <div class="common_heading">
+                    <h2>Shop By Category</h2>
+                </div>
+            </div>
+            <div class="browse_by_category">
+              
+
+                <div class="subCat_listings">
+                    <ng-container *ngFor="let item of subCategoryDetail">
+                        <div class="img_wrapper" routerLink="../../../product/{{categoryDetail?.name}}/{{categoryDetail?._id}}/{{item.title}}/{{item._id}}">
+                                <img [src]="item.image" alt=""> 
+                        </div>
+                    </ng-container>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>

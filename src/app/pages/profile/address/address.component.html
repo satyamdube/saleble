@@ -1,0 +1,61 @@
+<div class="fix_width">
+    <div class="profile_grid">
+        <div class="profile_navigation_menu">
+            <app-navigations></app-navigations>
+
+        </div>
+        <div class="profile_component">
+            <div class="card_wrapper"  >
+                <div class="card_header">
+                    <h4>Saved Addresses</h4>
+                    <button (click)="isModalOpen = true">Add New Address</button>
+                </div>
+                <div class="card_detail">
+                    <ng-container *ngIf="addressListing?.length >= 1; else showNoAddressFound">
+                        <div class="address_listings" *ngFor="let item of addressListing">
+                        <ng-container >
+                            <h4 *ngIf="item.defaultAddress === true">Default Address</h4>
+                            <h4 *ngIf="item.defaultAddress === false">Other Address</h4>
+                            <div class="address_grid"  [ngClass]="{'default_address': item.defaultAddress === true}">
+                                    <div class="address_header">
+                                        {{item.name}}
+                                    </div>
+                                <div class="address_desc">
+                                    <p>  {{item.address}}</p>
+                                    <p>{{item.city}} - {{item.pincode}}</p>
+                                    <p>Mobile: {{item.mobile | mask: '(000) 000-0000'}}</p>
+                                    <p>Alternate  Mobile no.: {{item.AlternativePhone | mask: '(000) 000 00 00'}}</p>
+                                </div>
+                                <div class="address_footer">
+                                    <ul>
+                                        <li (click)="edit(item)"><button >Edit</button></li>
+                                        <li (click)="delete(item._id)"><button>Remove</button></li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </ng-container>
+                        </div>
+                    </ng-container>
+                    <ng-template #showNoAddressFound>
+                       <div class="no_address_found">
+                        <img src="https://saleable-docs.s3.ap-south-1.amazonaws.com/others/18-location-pin-outline.gif" alt="locations">
+                        <h4>SAVE YOUR ADDRESSES NOW</h4>
+                        <p>Add your home and office addresses and enjoy faster checkout</p>
+                        <button (click)="isModalOpen = true">Add New Address</button>
+                       </div>
+                    </ng-template>
+                    
+                </div>
+
+            </div>
+            <div class="view_cart">
+                <button routerLink="/cart" >View Cart</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<app-add-address *ngIf="isModalOpen" ></app-add-address>

@@ -1,0 +1,16 @@
+.receint_view{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 10px 0;
+    .p_wrapper{
+        width: 19%;
+        margin: 5px;
+    }
+}
+.p_wrapper {
+    .p_img{
+        height: auto !important;
+    }
+}

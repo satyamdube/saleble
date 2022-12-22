@@ -1,0 +1,43 @@
+<div class="home_wrapper" *ngIf="receintViewProduct?.length >= 1" >
+    <div class="container-fluid">
+      <div class="common_heading">
+        <h2>Recently Viewed Products</h2>
+       </div>
+       <div class="receint_view">
+        <ng-container  *ngFor="let product  of receintViewProduct">
+            <div class="p_wrapper" (click)="viewProudctDetail(product)">
+                <div class="p_img">
+                  <img [src]="product.productImages[0]" [alt]="product.productName" onerror="this.src=`https://saleable-docs.s3.ap-south-1.amazonaws.com/others/img-thumbnail2.gif`;">
+                </div>
+               
+                <div class="p_dec">
+                  <p> 
+                    {{product.productName}}
+                  </p>
+                  <div class="price_listing">
+                    <ul>
+                      <ng-container  *ngIf="product.productSalePrice; else showNormalPrice">
+                      
+                          <li>
+                              {{ product.productSalePrice  | currency:'INR'}}
+                          </li>
+                          <li>
+                              <span> {{ product.productRegPrice| currency:'INR'}}</span>
+                              <span>({{product.productDiscount}}% Off)</span>
+                          </li>       
+                      </ng-container>
+                      <ng-template #showNormalPrice>
+                          <li>
+                              {{ product.productRegPrice| currency:'INR'}}
+                          </li>
+                      </ng-template>
+                      
+                  </ul>
+                  </div>
+                </div>
+              </div>
+          </ng-container>
+       </div>
+    </div>
+   
+  </div>
