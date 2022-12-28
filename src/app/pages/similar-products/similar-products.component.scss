@@ -14,9 +14,16 @@
         display: flex;
         justify-content: flex-start;
         align-items: flex-start;
+        overflow:auto;
         .p_wrapper{
             width: 19% !important;
             margin: 5px;
+            @media only screen and (max-width:992px) {
+                width:50% !important;
+            }
+            @media only screen and (max-width:767px) {
+                width:98% !important;
+            }
         }
     }
 }

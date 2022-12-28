@@ -1183,7 +1183,7 @@ button:disabled {
     }
 
     .cat_wrapper {
-        width: 31% !important;
+        width: 32.3% !important;
     }
 
     .fix_width {
@@ -1211,15 +1211,18 @@ button:disabled {
     .product_listing_body {
         padding: 0px !important;
     }
-
+    body .receint_view .p_wrapper{
+        width:max-content !important;
+    }
     .products_listings {
         width: 100% !important;
         padding: 0 !important;
 
         .p_wrapper {
             margin: 10px 0  !important;
-            width: 48% !important;
+            width: 50% !important;
             min-height: 327px !important;
+            box-sizing: border-box;
 
             .p_img {
                 height: auto !important;
@@ -2019,4 +2022,12 @@ body #secondary_header .fix_width .subcategory ul li:hover #onLeave, body #secon
 }
 .border_radius_5{
     border-radius: 5px;
+}
+@media only screen and (max-width:767px) {
+    #footer-contact .container-fluid .contact_right ul li{
+        margin: 10px 4px !important;
+    }
+    .cat_wrapper{
+        width:48% !important;
+    }
 }
